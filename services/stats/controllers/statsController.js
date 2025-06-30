@@ -3,7 +3,19 @@ import redis from "redis";
 import { getToday } from "../utils/streakUtils.js";
 
 const client = redis.createClient({ url: process.env.REDIS_URL });
-client.connect();
+
+(async () => {
+  try {
+    await client.connect();
+
+    // Quick test
+    await client.set('test', 'hello');
+    const val = await client.get('test');
+    console.log('Redis GET test:', val); // Should log "hello"
+  } catch (err) {
+    console.error('Connection/test failed:', err);
+  }
+})();
 
 export const recordStudy = async (req, res) => {
   const { correct } = req.body;
