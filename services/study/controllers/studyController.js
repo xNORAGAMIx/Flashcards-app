@@ -22,17 +22,18 @@ export const getReviewQueue = async (req, res) => {
   const key = `review:${req.user.id}`;
   const cached = await client.get(key);
   
-  console.log("Cache->", cached);
+  //console.log("Cache->", cached);
   
 
   if (cached && JSON.parse(cached).length > 0) {
     return res.json(JSON.parse(cached));
   }
 
+  // nextReview: { $lte: now },
   const now = new Date();
   const logs = await StudyLog.find({
     userId: req.user.id,
-    nextReview: { $lte: now },
+    
   });
   // console.log("logs-> ",logs);
   

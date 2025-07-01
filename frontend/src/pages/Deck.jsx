@@ -11,7 +11,7 @@ import {
   FiTag,
   FiLoader,
   FiTrash,
-  FiBookOpen
+  FiBookOpen,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 
@@ -25,6 +25,28 @@ const Deck = () => {
   const [tags, setTags] = useState("");
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const decksPerPage = 6;
+
+  const filteredDecks = allDecks.filter((deck) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      deck.title.toLowerCase().includes(query) ||
+      (deck.tags && deck.tags.some((tag) => tag.toLowerCase().includes(query)))
+    );
+  });
+
+  const totalPages = Math.ceil(filteredDecks.length / decksPerPage);
+  const paginatedDecks = filteredDecks.slice(
+    (currentPage - 1) * decksPerPage,
+    currentPage * decksPerPage
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   useEffect(() => {
     const handleDeck = async () => {
@@ -68,22 +90,32 @@ const Deck = () => {
   const handleDelete = async (id) => {
     try {
       const response = await remove(id, token);
-      dispatch(setDecks(allDecks.filter(deck => deck._id !== id)));
+      dispatch(setDecks(allDecks.filter((deck) => deck._id !== id)));
     } catch (err) {
       console.error("Error deleting deck:", err);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6 pt-20 px-6">
+      <div className="w-full mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-500 to-indigo-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-black dark:text-white">
             Your Decks
           </h1>
           <div className="text-sm text-gray-500 dark:text-gray-400">
             {allDecks.length} {allDecks.length === 1 ? "deck" : "decks"}
           </div>
+        </div>
+
+        <div className="mb-6">
+          <input
+            type="text"
+            placeholder="Search decks by title or tag..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full lg:w-1/2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white outline-none"
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -94,21 +126,21 @@ const Deck = () => {
             className="lg:col-span-1"
           >
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 h-fit">
-              <h2 className="text-xl font-semibold mb-4 flex items-center">
+              <h2 className="text-2xl font-semibold mb-4 flex items-center text-black dark:text-white">
                 <FiPlus className="mr-2 text-sky-500" />
                 Create New Deck
               </h2>
 
-              <form onSubmit={handleCreate} className="space-y-4">
+              <form onSubmit={handleCreate} className="space-y-6 p-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-xl font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Deck Title
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700 dark:text-white"
                     placeholder="e.g. Biology 101"
                     required
                   />
@@ -121,7 +153,7 @@ const Deck = () => {
                       checked={isPublic}
                       onChange={(e) => setIsPublic(e.target.checked)}
                       id="public"
-                      className="h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 dark:border-gray-600 rounded"
+                      className="h-4 w-4 text-sky-600 border-gray-300 outline-none dark:border-gray-600 rounded"
                     />
                   </div>
                   <div className="ml-3 text-sm">
@@ -148,7 +180,7 @@ const Deck = () => {
                 </div>
 
                 <div>
-                  <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
+                  <label className="text-xl font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center">
                     <FiTag className="mr-1" />
                     Tags
                   </label>
@@ -156,7 +188,7 @@ const Deck = () => {
                     type="text"
                     value={tags}
                     onChange={(e) => setTags(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700 dark:text-white"
                     placeholder="biology, science, chapter1"
                   />
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
@@ -167,7 +199,7 @@ const Deck = () => {
                 <button
                   type="submit"
                   disabled={creating}
-                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70"
+                  className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700  transition-all duration-200 disabled:opacity-70 outline-none cursor-pointer"
                 >
                   {creating ? (
                     <>
@@ -189,7 +221,7 @@ const Deck = () => {
           <div className="lg:col-span-2">
             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-2xl font-semibold dark:text-white text-black">
                   Your Study Decks
                 </h2>
               </div>
@@ -215,7 +247,7 @@ const Deck = () => {
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {allDecks.map((deck, index) => (
+                  {paginatedDecks.map((deck, index) => (
                     <motion.li
                       key={deck._id}
                       initial={{ opacity: 0, y: 20 }}
@@ -252,16 +284,16 @@ const Deck = () => {
                             )}
                           </div>
                         </div>
-                        <div className="flex-col space-x-2">
+                        <div className="flex-col space-y-2">
                           <button
                             onClick={() => handleDelete(deck._id)}
                             className="text-sm text-red-500 hover:text-red-600 dark:hover:text-red-400 flex items-center space-x-1 cursor-pointer"
                           >
-                            <FiTrash className="text-base" />
+                            <FiTrash className="text-lg" />
                           </button>
                           <Link
                             to={`/deck/${deck._id}`}
-                            className="text-sm font-medium text-sky-600 dark:text-sky-400 hover:text-sky-500 dark:hover:text-sky-300"
+                            className="text-lg font-medium text-sky-600 dark:text-sky-400 hover:text-sky-500 dark:hover:text-sky-300"
                           >
                             Study Now →
                           </Link>
@@ -275,6 +307,43 @@ const Deck = () => {
           </div>
         </div>
       </div>
+      {totalPages > 1 && (
+        <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 py-3 z-50">
+          <div className="flex justify-center space-x-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50"
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-1 border rounded-lg text-sm font-medium ${
+                  currentPage === page
+                    ? "bg-sky-500 text-white border-sky-500"
+                    : "text-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 border rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

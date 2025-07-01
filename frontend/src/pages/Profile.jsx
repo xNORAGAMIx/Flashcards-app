@@ -89,12 +89,12 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="pt-20 px-6 min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
               Account Settings
             </h1>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
@@ -136,7 +136,7 @@ const Profile = () => {
                   {user?.username?.charAt(0) || <FiUser />}
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">
+                  <h2 className="font-bold text-xl">
                     {user?.username || "Anonymous"}
                   </h2>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -144,7 +144,7 @@ const Profile = () => {
                   </p>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <button
                   onClick={() => setActiveTab("profile")}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left ${
@@ -178,16 +178,16 @@ const Profile = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-10"
               >
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-bold">Profile Information</h2>
+                  <h2 className="text-2xl font-bold">Profile Information</h2>
                   <button
                     onClick={() => {
                       if (editing) handleProfileUpdate();
                       setEditing(!editing);
                     }}
-                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium outline-none rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 "
                   >
                     {editing ? (
                       <>
@@ -205,7 +205,7 @@ const Profile = () => {
 
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Display Name
                     </label>
                     {editing ? (
@@ -213,7 +213,7 @@ const Profile = () => {
                         type="text"
                         value={nameInput}
                         onChange={(e) => setNameInput(e.target.value)}
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700"
                         placeholder="Enter your name"
                       />
                     ) : (
@@ -224,7 +224,7 @@ const Profile = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
                       About You
                     </label>
                     {editing ? (
@@ -232,7 +232,7 @@ const Profile = () => {
                         value={bioInput}
                         onChange={(e) => setBioInput(e.target.value)}
                         rows="4"
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700"
                         placeholder="Tell others about yourself"
                       />
                     ) : (
@@ -293,7 +293,7 @@ const Profile = () => {
                         placeholder="Enter friend's user identity code"
                         value={friendEmail}
                         onChange={(e) => setFriendEmail(e.target.value)}
-                        className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700"
+                        className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700"
                       />
                       <button
                         onClick={handleAddFriend}
@@ -327,7 +327,7 @@ const Profile = () => {
                               </div>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                              <p className="text-lg font-medium text-gray-900 dark:text-white truncate">
                                 {friend.username}
                               </p>
                               <p className="text-sm text-gray-500 dark:text-gray-300 truncate">

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setFlashcards } from "../features/flashcard/flashcardSlice";
 import { deckId, update } from "../api/deckAPI";
+import { review, queue } from "../api/studyAPI";
 import { create, deckCards, remove } from "../api/flashcardAPI";
 import {
   FiGlobe,
@@ -23,6 +24,7 @@ import { motion } from "framer-motion";
 const Flashcard = () => {
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token);
+  const userId = useSelector((state) => state.auth.userId);
   const allFlashCards = useSelector((state) => state.flashcard.flashcards);
 
   const [deck, setDeck] = useState(null);
@@ -33,12 +35,15 @@ const Flashcard = () => {
   const [creatingCard, setCreatingCard] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [sharedWith, setSharedWith] = useState("");
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
+
+  const [study, setStudy] = useState(null);
 
   useEffect(() => {
     const fetchDeck = async () => {
@@ -73,6 +78,23 @@ const Flashcard = () => {
 
     fetchCards();
   }, [token, id, dispatch]);
+
+  useEffect(() => {
+    const handleQueue = async () => {
+      try {
+        const response = await queue(token);
+        //console.log(response.data);
+        setStudy(response.data);
+      } catch (err) {
+        console.log("Error fetching queue", err);
+      }
+    };
+    handleQueue();
+  }, [token]);
+
+  const studyForThisDeck = study?.filter(
+    (item) => item.userId === userId && item.deckId === id
+  );
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -124,6 +146,20 @@ const Flashcard = () => {
     }
   };
 
+  const handleReview = async (isCorrect) => {
+    try {
+      await review(token, {
+        deckId: id,
+        cardId: cards[currentCardIndex]._id,
+        correct: isCorrect,
+      });
+      navigate(0);
+      //console.log("Review submitted:", isCorrect);
+    } catch (err) {
+      console.log("Error creating review", err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -147,13 +183,17 @@ const Flashcard = () => {
 
   const currentCard = cards[currentCardIndex];
 
+  const currentStudy = studyForThisDeck?.find(
+    (item) => item.cardId === currentCard?._id
+  );
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-6 md:px-12 lg:px-20">
+      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
         {/* Left Column - Deck Info and Card Creation */}
-        <div className="space-y-6">
+        <div className="space-y-10">
           {/* Deck Info Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
             <div className="p-6">
               {!editing ? (
                 <motion.div
@@ -162,7 +202,7 @@ const Flashcard = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="flex justify-between items-start">
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h1 className="text-6xl font-bold text-gray-900 dark:text-white">
                       {deck.title}
                     </h1>
                     <button
@@ -173,14 +213,14 @@ const Flashcard = () => {
                     </button>
                   </div>
 
-                  <div className="mt-4 space-y-3">
+                  <div className="mt-6 space-y-6">
                     <div className="flex items-center text-sm">
                       {deck.isPublic ? (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-lg font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300">
                           <FiGlobe className="mr-1" /> Public
                         </span>
                       ) : (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-lg font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
                           <FiLock className="mr-1" /> Private
                         </span>
                       )}
@@ -188,14 +228,14 @@ const Flashcard = () => {
 
                     {deck.sharedWith?.length > 0 && (
                       <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
                           Shared with
                         </p>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {deck.sharedWith.map((id) => (
                             <span
                               key={id}
-                              className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded"
+                              className="text-sm px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded"
                             >
                               {id}
                             </span>
@@ -206,14 +246,14 @@ const Flashcard = () => {
 
                     {deck.tags?.length > 0 && (
                       <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
                           Tags
                         </p>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {deck.tags.map((tag) => (
                             <span
                               key={tag}
-                              className="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded flex items-center"
+                              className="text-sm px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded flex items-center text-gray-400"
                             >
                               <FiTag className="mr-1" /> {tag}
                             </span>
@@ -229,10 +269,10 @@ const Flashcard = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="space-y-4"
+                  className="space-y-6"
                 >
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Deck Title
                     </label>
                     <input
@@ -292,9 +332,9 @@ const Flashcard = () => {
           </div>
 
           {/* Add Flashcard Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+            <div className="p-8">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
                 Add New Flashcard
               </h2>
               <form onSubmit={handleCreateFlashcard} className="space-y-4">
@@ -305,7 +345,7 @@ const Flashcard = () => {
                   <textarea
                     value={front}
                     onChange={(e) => setFront(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none  dark:bg-gray-700 dark:text-white"
                     placeholder="Enter question..."
                     rows="3"
                     required
@@ -319,7 +359,7 @@ const Flashcard = () => {
                   <textarea
                     value={back}
                     onChange={(e) => setBack(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none  dark:bg-gray-700 dark:text-white"
                     placeholder="Enter answer..."
                     rows="3"
                     required
@@ -329,7 +369,7 @@ const Flashcard = () => {
                 <button
                   type="submit"
                   disabled={creatingCard}
-                  className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70"
+                  className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70 cursor-pointer"
                 >
                   {creatingCard ? (
                     <>
@@ -365,22 +405,123 @@ const Flashcard = () => {
                 totalCards={cards.length}
               />
 
-              <div className="flex justify-center space-x-4 mt-6">
+              <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-6 space-y-4 sm:space-y-0 mt-12">
                 <button
                   disabled={currentCardIndex === 0}
                   onClick={() => setCurrentCardIndex((i) => i - 1)}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FiChevronLeft className="mr-1" /> Previous
                 </button>
+
+                <button
+                  onClick={() => handleReview(true)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                >
+                  Correct
+                </button>
+
+                <button
+                  onClick={() => handleReview(false)}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                >
+                  Incorrect
+                </button>
+
                 <button
                   disabled={currentCardIndex === cards.length - 1}
                   onClick={() => setCurrentCardIndex((i) => i + 1)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next <FiChevronRight className="ml-1" />
                 </button>
               </div>
+
+              {currentStudy && (
+                <div className="mt-8 w-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      <span className="bg-gradient-to-r from-sky-500 to-indigo-600 bg-clip-text text-transparent">
+                        Your Review Schedule
+                      </span>
+                    </h3>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      Card scheduled for review
+                    </span>
+                  </div>
+
+                  <motion.div
+                    key={currentStudy._id}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+                  >
+                    <div className="flex items-start space-x-3">
+                      <div
+                        className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${
+                          currentStudy.correctStreak > 3
+                            ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
+                            : "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
+                        }`}
+                      >
+                        {currentStudy.correctStreak}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              Next Review
+                            </p>
+                            <p className="font-medium text-gray-900 dark:text-white">
+                              {new Date(
+                                currentStudy.nextReview
+                              ).toLocaleDateString("en-US", {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              })}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              Last Reviewed
+                            </p>
+                            <p className="font-medium text-gray-900 dark:text-white">
+                              {currentStudy.lastReviewed
+                                ? new Date(
+                                    currentStudy.lastReviewed
+                                  ).toLocaleDateString("en-US", {
+                                    day: "numeric",
+                                    month: "long",
+                                    year: "numeric",
+                                  })
+                                : "Never"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              Streak
+                            </p>
+                            <p className="font-medium text-gray-900 dark:text-white">
+                              {currentStudy.correctStreak} correct
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              Interval
+                            </p>
+                            <p className="font-medium text-gray-900 dark:text-white">
+                              {currentStudy.interval} day
+                              {currentStudy.interval !== 1 ? "s" : ""}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
             </motion.div>
           ) : (
             <div className="text-center py-12">
@@ -412,7 +553,7 @@ const FlashcardFlip = ({
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <div className="perspective w-full max-w-md mx-auto relative">
+    <div className="perspective w-full max-w-3xl mx-auto relative">
       {/* Delete button centered at the top */}
       <button
         className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 text-sm text-red-500 hover:text-red-600 dark:hover:text-red-400 flex items-center space-x-1 cursor-pointer"
@@ -422,7 +563,7 @@ const FlashcardFlip = ({
       </button>
 
       <motion.div
-        className={`relative h-64 w-full cursor-default transform-style-preserve-3d ${
+        className={`relative h-96 w-full mt-4 cursor-default transform-style-preserve-3d ${
           flipped ? "rotate-y-180" : ""
         }`}
         onClick={() => setFlipped(!flipped)}

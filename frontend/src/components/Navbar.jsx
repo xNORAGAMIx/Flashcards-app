@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { clearDecks } from "../features/deck/deckSlice";
+import { clearFlashcards } from "../features/flashcard/flashcardSlice";
 import { FiHome, FiUser, FiLogOut, FiLogIn, FiUserPlus } from "react-icons/fi";
 import { PiCardsBold } from "react-icons/pi";
 
@@ -13,11 +14,12 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(clearDecks());
+    dispatch(clearFlashcards());
     navigate("/login");
   };
 
   return (
-    <nav className="bg-white dark:bg-gray-800 shadow-sm px-6 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-800 shadow-sm px-6 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
       <div className="flex items-center space-x-2">
         <Link
           to="/"
