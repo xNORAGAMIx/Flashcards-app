@@ -431,7 +431,7 @@ const FlashcardFlip = ({
         animate={{ rotateY: flipped ? 180 : 0 }}
       >
         {/* Front */}
-        <div className="absolute inset-0 backface-hidden bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
+        <div className="absolute inset-0 backface-hidden bg-zinc-100 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
           <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Card {cardNumber} of {totalCards} • Click to flip
           </div>
