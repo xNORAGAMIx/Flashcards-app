@@ -25,18 +25,44 @@ export const updateProfile = async (req, res) => {
 };
 
 export const addFriend = async (req, res) => {
-  const friendId = req.body.friendId;
-  if (!friendId) return res.status(400).json({ message: "Friend ID required" });
-
   try {
-    const profile = await UserProfile.findOneAndUpdate(
-      { userId: req.user.id },
-      { $addToSet: { friends: friendId } },
-      { new: true }
-    );
-    res.json(profile);
+    // valid user
+    const user = await UserProfile.findOne({ userId: req.user.id });
+    if (!user)
+      return res.status(404).json({ message: "User profile not found" });
+
+    let friend;
+
+    // valid friend
+    if (req.body.friendId) {
+      friend = await UserProfile.findOne({ userId: req.body.friendId });
+    }
+
+    if (!friend) return res.status(404).json({ message: "Friend not found" });
+
+    // check if already friends
+    if (user.friends.includes(friend._id)) {
+      return res.status(400).json({ message: "Already friends" });
+    }
+
+    // check if friend is not the user itself
+    if (friend.userId === user.userId) {
+      return res
+        .status(400)
+        .json({ message: "Cannot add yourself as a friend" });
+    }
+    // add friend to user's friends list
+    user.friends.push({
+      _id: friend._id.toString(),
+      userId: friend.userId,
+      email: friend.email,
+      bio: friend.bio,
+    });
+    await user.save();
+
+    res.json({ message: "Friend added", friend });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };
 

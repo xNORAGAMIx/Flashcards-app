@@ -43,11 +43,21 @@ const Profile = () => {
           <p>Bio: {user?.bio}</p>
           <h2>Friends:</h2>
           <ul>
-            {(user && user.friends).map(
-              (friend, index) => (
-                <li key={index}>{friend}</li>
-              )
-            )}
+            {(user && user.friends).map((friend) => (
+              <li key={friend._id}>
+                <p>
+                  <strong>Email:</strong> {friend.email}
+                </p>
+                {friend.bio && (
+                  <p>
+                    <strong>Bio:</strong> {friend.bio}
+                  </p>
+                )}
+                <p className="text-sm text-gray-500">
+                  <strong>User ID:</strong> {friend.userId}
+                </p>
+              </li>
+            ))}
           </ul>
         </div>
       )}

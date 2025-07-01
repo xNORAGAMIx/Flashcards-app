@@ -1,6 +1,5 @@
-import amqp from 'amqplib';
-import UserProfile from '../models/UserProfile.js';
-
+import amqp from "amqplib";
+import UserProfile from "../models/UserProfile.js";
 
 export const connectRabbit = async () => {
   const connection = await amqp.connect("amqp://localhost:5672");
@@ -13,10 +12,14 @@ export const connectRabbit = async () => {
 
     const exists = await UserProfile.findOne({ userId: data.userId });
     if (!exists) {
-      await UserProfile.create({ userId: data.userId });
+      await UserProfile.create({
+        userId: data.userId,
+        email: data.email,
+        username: data.username,
+      });
       console.log("User profile created for", data.username);
     }
 
     channel.ack(msg);
   });
-}
+};
