@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { profile, friend, update } from "../api/userAPI";
 import { setProfile } from "../features/auth/authSlice";
-import { FiEdit2, FiCheck, FiUserPlus, FiUsers, FiMail, FiUser } from "react-icons/fi";
+import {
+  FiEdit2,
+  FiCheck,
+  FiUserPlus,
+  FiUsers,
+  FiMail,
+  FiUser,
+} from "react-icons/fi";
 import { motion } from "framer-motion";
 
 const Profile = () => {
@@ -58,7 +65,7 @@ const Profile = () => {
 
   const handleAddFriend = async () => {
     try {
-      const response = await friend(token, friendEmail);
+      const response = await friend(token, { friendId: friendEmail });
       dispatch(setProfile({ ...response.data }));
       setFriendEmail("");
       setShowFriendSuccess(true);
@@ -73,7 +80,9 @@ const Profile = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="animate-pulse text-center">
           <div className="h-8 w-8 bg-sky-400 rounded-full mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading your profile...</p>
+          <p className="text-gray-600 dark:text-gray-400">
+            Loading your profile...
+          </p>
         </div>
       </div>
     );
@@ -85,7 +94,9 @@ const Profile = () => {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Account Settings</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Account Settings
+            </h1>
             <p className="mt-2 text-gray-600 dark:text-gray-400">
               Manage your profile and connections
             </p>
@@ -94,13 +105,21 @@ const Profile = () => {
             <nav className="flex space-x-4">
               <button
                 onClick={() => setActiveTab("profile")}
-                className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === "profile" ? 'bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  activeTab === "profile"
+                    ? "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                }`}
               >
                 Profile
               </button>
               <button
                 onClick={() => setActiveTab("friends")}
-                className={`px-3 py-2 rounded-md text-sm font-medium ${activeTab === "friends" ? 'bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300' : 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}`}
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  activeTab === "friends"
+                    ? "bg-sky-100 dark:bg-sky-900 text-sky-700 dark:text-sky-300"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+                }`}
               >
                 Friends ({user.friends?.length || 0})
               </button>
@@ -117,21 +136,33 @@ const Profile = () => {
                   {user?.username?.charAt(0) || <FiUser />}
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">{user?.username || "Anonymous"}</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">@{user?.userId?.slice(-6)}</p>
+                  <h2 className="font-bold text-lg">
+                    {user?.username || "Anonymous"}
+                  </h2>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    @{user?.userId?.slice(-6)}
+                  </p>
                 </div>
               </div>
               <div className="space-y-4">
                 <button
                   onClick={() => setActiveTab("profile")}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left ${activeTab === "profile" ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left ${
+                    activeTab === "profile"
+                      ? "bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
                 >
                   <FiUser className="flex-shrink-0" />
                   <span>Profile Information</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("friends")}
-                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left ${activeTab === "friends" ? 'bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                  className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left ${
+                    activeTab === "friends"
+                      ? "bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
                 >
                   <FiUsers className="flex-shrink-0" />
                   <span>Friends & Connections</span>
@@ -205,7 +236,11 @@ const Profile = () => {
                         placeholder="Tell others about yourself"
                       />
                     ) : (
-                      <p className={`px-4 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg ${!user?.bio && "text-gray-400 italic"}`}>
+                      <p
+                        className={`px-4 py-2 bg-gray-50 dark:bg-gray-700 rounded-lg ${
+                          !user?.bio && "text-gray-400 italic"
+                        }`}
+                      >
                         {user?.bio || "No bio added"}
                       </p>
                     )}
@@ -217,12 +252,20 @@ const Profile = () => {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">User ID</p>
-                        <p className="text-sm font-mono text-gray-900 dark:text-gray-200">{user?.userId}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          User ID
+                        </p>
+                        <p className="text-sm font-mono text-gray-900 dark:text-gray-200">
+                          {user?.userId}
+                        </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Account Type</p>
-                        <p className="text-sm text-gray-900 dark:text-gray-200">Standard</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          Account Type
+                        </p>
+                        <p className="text-sm text-gray-900 dark:text-gray-200">
+                          Standard
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -236,8 +279,10 @@ const Profile = () => {
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
               >
                 <div className="mb-6">
-                  <h2 className="text-xl font-bold mb-4">Friends & Connections</h2>
-                  
+                  <h2 className="text-xl font-bold mb-4">
+                    Friends & Connections
+                  </h2>
+
                   <div className="bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800 rounded-lg p-4 mb-6">
                     <h3 className="font-medium text-sky-800 dark:text-sky-200 mb-2 flex items-center">
                       <FiUserPlus className="mr-2" /> Add New Friend
@@ -270,7 +315,7 @@ const Profile = () => {
                   <h3 className="font-medium text-gray-900 dark:text-white mb-4">
                     Your Connections ({user?.friends?.length || 0})
                   </h3>
-                  
+
                   {user?.friends && user?.friends.length > 0 ? (
                     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
                       {user?.friends.map((friend) => (
