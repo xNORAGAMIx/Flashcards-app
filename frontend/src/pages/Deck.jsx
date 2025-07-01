@@ -11,6 +11,7 @@ import {
   FiTag,
   FiLoader,
   FiTrash,
+  FiBookOpen
 } from "react-icons/fi";
 import { motion } from "framer-motion";
 

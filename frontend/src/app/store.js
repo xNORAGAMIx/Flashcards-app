@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../features/auth/authSlice";
 import deckReducer from "../features/deck/deckSlice";
+import flashcardReducer from "../features/flashcard/flashcardSlice";
 import {
   persistStore,
   persistReducer,
@@ -34,9 +35,19 @@ const persistConfigDeck = {
   whitelist: ["decks"],
 };
 
+const persistConfigFlashcard = {
+  key: "deck",
+  storage,
+  whitelist: ["flashcards"],
+};
+
 // 2. Create persisted reducer
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 const persistedDeckReducer = persistReducer(persistConfigDeck, deckReducer);
+const persistedFlashcardReducer = persistReducer(
+  persistConfigFlashcard,
+  flashcardReducer
+);
 
 // export const store = configureStore({
 //   reducer: {
@@ -49,6 +60,7 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     deck: persistedDeckReducer,
+    flashcard: persistedFlashcardReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
