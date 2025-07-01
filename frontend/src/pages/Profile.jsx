@@ -330,8 +330,11 @@ const Profile = () => {
                               <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
                                 {friend.username}
                               </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                              <p className="text-sm text-gray-500 dark:text-gray-300 truncate">
                                 {friend.bio || "Busy"}
+                              </p>
+                              <p className="text-sm text-gray-500 dark:text-gray-400 dark:opacity-20 truncate">
+                                {friend._id || ""}
                               </p>
                             </div>
                             <div>

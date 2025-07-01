@@ -4,6 +4,8 @@ import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Profile from "./pages/Profile";
+import Deck from "./pages/Deck";
+import Flashcard from "./pages/Flashcard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -19,6 +21,23 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/deck"
+          element={
+            <ProtectedRoute>
+              <Deck />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/deck/:id"
+          element={
+            <ProtectedRoute>
+              <Flashcard />
             </ProtectedRoute>
           }
         />
