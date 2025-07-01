@@ -1,11 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
+import cors from "cors";
 import userRoutes from "./routes/userRoutes.js";
 import { connectRabbit } from "./utils/rabbit.js";
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 mongoose
