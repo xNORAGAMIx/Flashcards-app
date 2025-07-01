@@ -57,6 +57,7 @@ export const addFriend = async (req, res) => {
       userId: friend.userId,
       email: friend.email,
       bio: friend.bio,
+      username: friend.username
     });
     await user.save();
 

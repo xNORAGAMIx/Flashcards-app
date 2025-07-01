@@ -9,12 +9,13 @@ const userProfileSchema = new mongoose.Schema(
     avatarUrl: { type: String, default: "" },
     friends: [
       {
-        _id: String, 
+        _id: String,
         userId: String,
         email: String,
         bio: String,
+        username: String,
       },
-    ], 
+    ],
   },
   { timestamps: true }
 );
