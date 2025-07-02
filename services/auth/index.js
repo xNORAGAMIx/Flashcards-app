@@ -22,6 +22,13 @@ connectRabbit().then(() => {
   console.log("Auth connected to RabbitMQ");
 });
 
+//test
+app.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
 
