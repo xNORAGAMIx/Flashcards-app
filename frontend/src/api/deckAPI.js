@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5002/api/decks",
+  baseURL: "https://deck-service.onrender.com/api/decks",
+  //baseURL: "http://localhost:5002/api/decks"
 });
 
 // Done

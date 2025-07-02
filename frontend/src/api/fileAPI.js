@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5007/api/files",
+  baseURL: "https://file-service-ldv9.onrender.com/api/files",
+  // baseURL: "http://localhost:5007/api/files"
 });
 
 // Done

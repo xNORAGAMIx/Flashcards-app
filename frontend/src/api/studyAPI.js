@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5004/api/study",
+  baseURL: "https://study-service.onrender.com/api/study",
+  // baseURL: "http://localhost:5004/api/study"
 });
 
 export const review = (token, data) => {

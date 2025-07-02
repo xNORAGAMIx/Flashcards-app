@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5001/api/users",
+  baseURL: "https://user-service-x67a.onrender.com/api/users",
+  //baseURL: "http://localhost:5001/api/users",
 });
 
 export const profile = (token) => {
@@ -23,7 +24,7 @@ export const update = (token, data) => {
 
 export const friend = (token, data) => {
   console.log(data);
-  
+
   return API.post("/add-friend", data, {
     headers: {
       Authorization: `Bearer ${token}`,
