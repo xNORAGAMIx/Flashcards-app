@@ -33,9 +33,8 @@ export const getReviewQueue = async (req, res) => {
   const now = new Date();
   const logs = await StudyLog.find({
     userId: req.user.id,
-    
   });
-  // console.log("logs-> ",logs);
+  console.log("logs-> ",logs);
   
 
   await client.setEx(key, 3600, JSON.stringify(logs)); // cache for 1 hour

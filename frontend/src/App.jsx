@@ -6,6 +6,7 @@ import Register from "./pages/auth/Register";
 import Profile from "./pages/Profile";
 import Deck from "./pages/Deck";
 import Flashcard from "./pages/Flashcard";
+import Performance from "./pages/Performance";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -32,7 +33,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/stats"
+          element={
+            <ProtectedRoute>
+              <Performance />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/deck/:id"
           element={

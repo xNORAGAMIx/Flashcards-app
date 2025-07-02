@@ -18,7 +18,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   if(isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/profile" replace />;
   }
 
   const handleLogin = async (e) => {
@@ -30,7 +30,7 @@ const Login = () => {
       const response = await login({ email, password });
       const { username:userName, token, email: userEmail } = response.data;
       dispatch(loginAction({ token, email: userEmail, username: userName }));
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       setError(error.response?.data?.message || "Login failed. Please try again.");
       console.error("Login failed:", error);

@@ -42,7 +42,7 @@ const Home = () => {
                 className="group relative overflow-hidden bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
               >
                 <span className="relative z-10 flex items-center">
-                  Get Started Free{" "}
+                  Get Started{" "}
                   <FiArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
                 </span>
                 <motion.span
@@ -58,7 +58,7 @@ const Home = () => {
                 className="group relative overflow-hidden bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
               >
                 <span className="relative z-10 flex items-center">
-                  Get Started Free{" "}
+                  Get Started{" "}
                   <FiArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
                 </span>
                 <motion.span
@@ -72,7 +72,7 @@ const Home = () => {
 
             {isAuthenticated ? (
               <Link
-                to="/profile"
+                to="/deck"
                 className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 px-8 py-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-300 font-semibold"
               >
                 Catch up
@@ -295,7 +295,7 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              to="/register"
+              to="/deck"
               className="group relative overflow-hidden bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
             >
               <span className="relative z-10 flex items-center">
@@ -309,16 +309,7 @@ const Home = () => {
                 transition={{ duration: 0.6 }}
               />
             </Link>
-            <Link
-              to="/features"
-              className="bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 px-8 py-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 shadow-sm transition-all duration-300 font-semibold"
-            >
-              Explore Features
-            </Link>
           </div>
-          <p className="mt-6 text-gray-500 dark:text-gray-400 text-sm">
-            No credit card required • 7-day free trial • Cancel anytime
-          </p>
         </motion.div>
       </section>
     </div>

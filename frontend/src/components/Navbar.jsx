@@ -5,6 +5,7 @@ import { clearDecks } from "../features/deck/deckSlice";
 import { clearFlashcards } from "../features/flashcard/flashcardSlice";
 import { FiHome, FiUser, FiLogOut, FiLogIn, FiUserPlus } from "react-icons/fi";
 import { PiCardsBold } from "react-icons/pi";
+import { IoAnalyticsSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -53,6 +54,13 @@ const Navbar = () => {
             >
               <PiCardsBold className="h-5 w-5" />
               <span className="hidden sm:inline">Deck</span>
+            </Link>
+            <Link
+              to="/stats"
+              className="flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+            >
+              <IoAnalyticsSharp className="h-5 w-5" />
+              <span className="hidden sm:inline">Statistics</span>
             </Link>
             <button
               onClick={handleLogout}

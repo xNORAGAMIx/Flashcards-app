@@ -1,13 +1,16 @@
 import dotenv from "dotenv";
 import express from "express";
+import cors from "cors";
 import fs from "fs";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import path from "path";
 import fileRoutes from "./routes/fileRoutes.js";
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);

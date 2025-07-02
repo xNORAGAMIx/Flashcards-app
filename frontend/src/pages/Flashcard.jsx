@@ -17,8 +17,9 @@ import {
   FiChevronRight,
   FiPlus,
   FiRotateCw,
-  FiTrash,
+  FiTrash2,
 } from "react-icons/fi";
+import CSVImporter from "../components/CSVImporter";
 import { motion } from "framer-motion";
 
 const Flashcard = () => {
@@ -64,18 +65,18 @@ const Flashcard = () => {
     fetchDeck();
   }, [id, token]);
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await deckCards(id, token);
-        setCards(res.data);
-        setCurrentCardIndex(0);
-        dispatch(setFlashcards(res.data));
-      } catch (err) {
-        console.error("Error fetching flashcards:", err);
-      }
-    };
+  const fetchCards = async () => {
+    try {
+      const res = await deckCards(id, token);
+      setCards(res.data);
+      setCurrentCardIndex(0);
+      dispatch(setFlashcards(res.data));
+    } catch (err) {
+      console.error("Error fetching flashcards:", err);
+    }
+  };
 
+  useEffect(() => {
     fetchCards();
   }, [token, id, dispatch]);
 
@@ -191,7 +192,7 @@ const Flashcard = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-6 md:px-12 lg:px-20">
       <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
         {/* Left Column - Deck Info and Card Creation */}
-        <div className="space-y-10">
+        <div className="space-y-4">
           {/* Deck Info Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
             <div className="p-6">
@@ -332,7 +333,8 @@ const Flashcard = () => {
           </div>
 
           {/* Add Flashcard Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex justify-between items-center">
+            <CSVImporter deckId={id} onImportSuccess={fetchCards} />
             <div className="p-8">
               <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
                 Add New Flashcard
@@ -405,7 +407,7 @@ const Flashcard = () => {
                 totalCards={cards.length}
               />
 
-              <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-6 space-y-4 sm:space-y-0 mt-12">
+              <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-6 space-y-4 sm:space-y-0 mt-10">
                 <button
                   disabled={currentCardIndex === 0}
                   onClick={() => setCurrentCardIndex((i) => i - 1)}
@@ -559,7 +561,7 @@ const FlashcardFlip = ({
         className="absolute bottom-5 left-1/2 -translate-x-1/2 z-10 text-sm text-red-500 hover:text-red-600 dark:hover:text-red-400 flex items-center space-x-1 cursor-pointer"
         onClick={() => handleRemove(fid)}
       >
-        <FiTrash className="text-2xl" />
+        <FiTrash2 className="text-2xl" />
       </button>
 
       <motion.div
@@ -572,7 +574,7 @@ const FlashcardFlip = ({
         animate={{ rotateY: flipped ? 180 : 0 }}
       >
         {/* Front */}
-        <div className="absolute inset-0 backface-hidden bg-zinc-100 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
+        <div className="absolute inset-0 backface-hidden bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
           <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Card {cardNumber} of {totalCards} • Click to flip
           </div>
@@ -585,7 +587,7 @@ const FlashcardFlip = ({
         </div>
 
         {/* Back */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180 bg-indigo-100 dark:bg-indigo-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white">
+        <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gray-100 dark:bg-zinc-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white">
           <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
             Card {cardNumber} of {totalCards} • Click to flip back
           </div>
