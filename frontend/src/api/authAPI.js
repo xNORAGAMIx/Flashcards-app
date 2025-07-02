@@ -1,7 +1,10 @@
 import axios from "axios";
 
+const URL = "https://auth-service-n1ic.onrender.com"
+
 const API = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "https://auth-service-n1ic.onrender.com/api/auth",
+  //baseURL: "http://localhost:5000/api/auth",
 });
 
 export const login = (data) => {
