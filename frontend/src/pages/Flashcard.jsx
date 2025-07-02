@@ -154,7 +154,6 @@ const Flashcard = () => {
         cardId: cards[currentCardIndex]._id,
         correct: isCorrect,
       });
-      navigate(0);
       //console.log("Review submitted:", isCorrect);
     } catch (err) {
       console.log("Error creating review", err);
@@ -419,21 +418,21 @@ const Flashcard = () => {
                 <button
                   disabled={currentCardIndex === 0}
                   onClick={() => setCurrentCardIndex((i) => i - 1)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-lg shadow-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <FiChevronLeft className="mr-1" /> Previous
                 </button>
 
                 <button
                   onClick={() => handleReview(true)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 outline-none"
                 >
                   Correct
                 </button>
 
                 <button
                   onClick={() => handleReview(false)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 outline-none"
                 >
                   Incorrect
                 </button>
@@ -441,7 +440,7 @@ const Flashcard = () => {
                 <button
                   disabled={currentCardIndex === cards.length - 1}
                   onClick={() => setCurrentCardIndex((i) => i + 1)}
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-sky-600 hover:bg-sky-700 outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next <FiChevronRight className="ml-1" />
                 </button>
