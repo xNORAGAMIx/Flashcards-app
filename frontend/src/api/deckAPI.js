@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "https://deck-service.onrender.com/api/decks",
-  //baseURL: "http://localhost:5002/api/decks"
+  // baseURL: "http://localhost:5002/api/decks"
 });
 
 // Done
@@ -23,11 +23,15 @@ export const decks = (token) => {
   });
 };
 
-export const shared = (data) => {
-  return API.get("/shared", data);
+export const shared = (token) => {
+  return API.get("/shared", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
-// needs checking
+// done
 export const update = (id, token, data) => {
   return API.put(`/${id}`, data, {
     headers: {

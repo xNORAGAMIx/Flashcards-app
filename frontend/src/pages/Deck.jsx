@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { create, decks, remove } from "../api/deckAPI";
-import { setDecks } from "../features/deck/deckSlice";
+import { create, decks, remove, shared } from "../api/deckAPI";
+import { setDecks, addDeck } from "../features/deck/deckSlice";
 import {
   FiPlus,
   FiLock,
@@ -62,6 +62,20 @@ const Deck = () => {
     };
 
     handleDeck();
+  }, [token, dispatch]);
+
+  useEffect(() => {
+    const handleShared = async () => {
+      try {
+        const response = await shared(token);
+        response.data.forEach(deck => dispatch(addDeck(deck)));
+        // console.log(response);
+      } catch (err) {
+        console.log("Error fetching shared", err);
+      }
+    };
+
+    handleShared();
   }, [token, dispatch]);
 
   const handleCreate = async (e) => {

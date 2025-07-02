@@ -14,8 +14,11 @@ const deckSlice = createSlice({
     clearDecks: (state) => {
       state.decks = [];
     },
+    addDeck: (state, action) => {
+      state.decks.push(action.payload); 
+    },
   },
 });
 
-export const { setDecks, clearDecks } = deckSlice.actions;
+export const { setDecks, clearDecks, addDeck } = deckSlice.actions;
 export default deckSlice.reducer;

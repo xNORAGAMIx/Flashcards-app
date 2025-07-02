@@ -13,8 +13,8 @@ const router = express.Router();
 
 router.post("/", protect, createDeck);
 router.get("/mine", protect, getMyDecks);
-router.get("/:deckId", protect, getDeckById);
 router.get("/shared", protect, getSharedDecks);
+router.get("/:deckId", protect, getDeckById);
 router.put("/:id", protect, updateDeck);
 router.delete("/:id", protect, deleteDeck);
 

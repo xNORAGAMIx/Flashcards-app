@@ -340,7 +340,7 @@ const Profile = () => {
                                 {friend.bio || "Busy"}
                               </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400 dark:opacity-20 truncate">
-                                {friend._id || ""}
+                                {friend.userId || ""}
                               </p>
                             </div>
 
