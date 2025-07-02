@@ -66,20 +66,20 @@ const CSVImporter = ({ deckId, onImportSuccess }) => {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl overflow-hidden"
+      className="w-full max-w-lg mx-auto bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow"
     >
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         <div className="flex items-center mb-4">
           <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mr-3">
             <FiUpload className="text-lg" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
             Import Flashcards
           </h3>
         </div>
 
         <div className="space-y-4">
-          <div className="flex flex-col items-center justify-center pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg">
+          <div className="flex flex-col items-center justify-center text-center pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-lg">
             <FiFileText className="w-10 h-10 mb-3 text-gray-400" />
             <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
               <span className="font-semibold">Click to upload</span> or drag and
@@ -105,7 +105,7 @@ const CSVImporter = ({ deckId, onImportSuccess }) => {
               Select file
             </label>
             {csvFile && (
-              <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">
+              <p className="mt-2 text-sm text-gray-700 dark:text-gray-300 truncate max-w-[80%]">
                 Selected: <span className="font-medium">{csvFile.name}</span>
               </p>
             )}
@@ -167,14 +167,11 @@ const CSVImporter = ({ deckId, onImportSuccess }) => {
 
           <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
             <p className="font-medium">CSV Format:</p>
-            <pre className="bg-gray-100 dark:bg-gray-700 p-2 rounded mt-1 overflow-x-auto">
+            <pre className="bg-gray-100 dark:bg-gray-700 p-2 rounded mt-1 overflow-x-auto whitespace-pre-wrap text-xs leading-relaxed max-h-32">
               front,back
-              <br />
-              "What is the capital of France?","Paris"
-              <br />
-              "2+2","4"
-              <br />
-              "Photosynthesis occurs in","Chloroplasts"
+              {"\n"}"What is the capital of France?","Paris"
+              {"\n"}"2+2","4"
+              {"\n"}"Photosynthesis occurs in","Chloroplasts"
             </pre>
           </div>
         </div>

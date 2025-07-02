@@ -3,7 +3,7 @@ import amqp from "amqplib";
 let channel;
 
 export const connectRabbitMQ = async () => {
-  const connection = await amqp.connect("amqp://localhost:5672");
+  const connection = await amqp.connect(process.env.RABBITMQ_URL || "amqp://localhost:5672");
   channel = await connection.createChannel();
   await channel.assertQueue("study.completed", { durable: true });
 };

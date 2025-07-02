@@ -3,7 +3,7 @@ import amqp from "amqplib";
 let channel;
 
 export const connectRabbit = async () => {
-  const connection = await amqp.connect("amqp://localhost:5672"); // 'rabbitmq' = container name in Docker
+  const connection = await amqp.connect(process.env.RABBITMQ_URL ||"amqp://localhost:5672"); // 'rabbitmq' = container name in Docker
   channel = await connection.createChannel();
   await channel.assertQueue("user.created", { durable: true });
 };

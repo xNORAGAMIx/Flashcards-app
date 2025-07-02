@@ -276,24 +276,25 @@ const Profile = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 sm:p-6 w-full"
               >
                 <div className="mb-6">
-                  <h2 className="text-xl font-bold mb-4">
+                  <h2 className="text-lg sm:text-xl font-bold mb-4">
                     Friends & Connections
                   </h2>
 
                   <div className="bg-sky-50 dark:bg-sky-900/20 border border-sky-100 dark:border-sky-800 rounded-lg p-4 mb-6">
-                    <h3 className="font-medium text-sky-800 dark:text-sky-200 mb-2 flex items-center">
+                    <h3 className="font-medium text-sky-800 dark:text-sky-200 mb-2 flex items-center text-sm sm:text-base">
                       <FiUserPlus className="mr-2" /> Add New Friend
                     </h3>
-                    <div className="flex space-x-2">
+
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
                       <input
                         type="email"
                         placeholder="Enter friend's user identity code"
                         value={friendEmail}
                         onChange={(e) => setFriendEmail(e.target.value)}
-                        className="flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700"
+                        className="w-full sm:flex-grow px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg outline-none dark:bg-gray-700 text-sm"
                       />
                       <button
                         onClick={handleAddFriend}
@@ -303,6 +304,7 @@ const Profile = () => {
                         Add
                       </button>
                     </div>
+
                     {showFriendSuccess && (
                       <p className="mt-2 text-sm text-green-600 dark:text-green-400">
                         Friend request sent successfully!
@@ -312,32 +314,37 @@ const Profile = () => {
                 </div>
 
                 <div>
-                  <h3 className="font-medium text-gray-900 dark:text-white mb-4">
+                  <h3 className="font-medium text-gray-900 dark:text-white mb-4 text-base sm:text-lg">
                     Your Connections ({user?.friends?.length || 0})
                   </h3>
 
                   {user?.friends && user?.friends.length > 0 ? (
                     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-                      {user?.friends.map((friend) => (
+                      {user.friends.map((friend) => (
                         <li key={friend._id} className="py-4">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex-shrink-0">
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+                            <div
+                              className="flex-shrink-0 hidden sm:flex
+"
+                            >
                               <div className="h-10 w-10 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500 flex items-center justify-center text-white">
                                 <FiUser />
                               </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-lg font-medium text-gray-900 dark:text-white truncate">
+
+                            <div className="flex-1 min-w-0 text-center sm:text-left">
+                              <p className="text-base font-medium text-gray-900 dark:text-white truncate">
                                 {friend.username}
                               </p>
                               <p className="text-sm text-gray-500 dark:text-gray-300 truncate">
                                 {friend.bio || "Busy"}
                               </p>
-                              <p className="text-sm text-gray-500 dark:text-gray-400 dark:opacity-20 truncate">
+                              <p className="text-xs text-gray-500 dark:text-gray-400 dark:opacity-20 truncate">
                                 {friend._id || ""}
                               </p>
                             </div>
-                            <div>
+
+                            <div className="flex justify-center sm:justify-end">
                               <span className="inline-flex items-center px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-full shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <FiMail className="mr-1" /> {friend?.email}
                               </span>
@@ -348,8 +355,8 @@ const Profile = () => {
                     </ul>
                   ) : (
                     <div className="text-center py-12">
-                      <FiUsers className="mx-auto h-12 w-12 text-gray-400" />
-                      <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                      <FiUsers className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" />
+                      <h3 className="mt-2 text-sm sm:text-base font-medium text-gray-900 dark:text-white">
                         No friends yet
                       </h3>
                       <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">

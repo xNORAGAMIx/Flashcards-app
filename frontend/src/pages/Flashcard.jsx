@@ -333,57 +333,65 @@ const Flashcard = () => {
           </div>
 
           {/* Add Flashcard Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex justify-between items-center">
-            <CSVImporter deckId={id} onImportSuccess={fetchCards} />
-            <div className="p-8">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                Add New Flashcard
-              </h2>
-              <form onSubmit={handleCreateFlashcard} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Front (Question)
-                  </label>
-                  <textarea
-                    value={front}
-                    onChange={(e) => setFront(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none  dark:bg-gray-700 dark:text-white"
-                    placeholder="Enter question..."
-                    rows="3"
-                    required
-                  />
-                </div>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8">
+            {/* CSV Import Section */}
+            <div className="w-full lg:w-1/2">
+              <CSVImporter deckId={id} onImportSuccess={fetchCards} />
+            </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Back (Answer)
-                  </label>
-                  <textarea
-                    value={back}
-                    onChange={(e) => setBack(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none  dark:bg-gray-700 dark:text-white"
-                    placeholder="Enter answer..."
-                    rows="3"
-                    required
-                  />
-                </div>
+            {/* Add Flashcard Form */}
+            <div className="w-full lg:w-1/2">
+              <div className="bg-white dark:bg-gray-800 rounded-xl h-full">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                  Add New Flashcard
+                </h2>
 
-                <button
-                  type="submit"
-                  disabled={creatingCard}
-                  className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70 cursor-pointer"
-                >
-                  {creatingCard ? (
-                    <>
-                      <FiRotateCw className="animate-spin mr-2" /> Adding...
-                    </>
-                  ) : (
-                    <>
-                      <FiPlus className="mr-2" /> Add Flashcard
-                    </>
-                  )}
-                </button>
-              </form>
+                <form onSubmit={handleCreateFlashcard} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Front (Question)
+                    </label>
+                    <textarea
+                      value={front}
+                      onChange={(e) => setFront(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
+                      placeholder="Enter question..."
+                      rows="3"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Back (Answer)
+                    </label>
+                    <textarea
+                      value={back}
+                      onChange={(e) => setBack(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
+                      placeholder="Enter answer..."
+                      rows="3"
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={creatingCard}
+                    className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70 cursor-pointer"
+                  >
+                    {creatingCard ? (
+                      <>
+                        <FiRotateCw className="animate-spin mr-2" /> Adding...
+                      </>
+                    ) : (
+                      <>
+                        <FiPlus className="mr-2" /> Add Flashcard
+                      </>
+                    )}
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
