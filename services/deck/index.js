@@ -16,6 +16,15 @@ mongoose
   .then(() => console.log("Deck DB connected"))
   .catch((err) => console.error(err));
 
+
+//test
+app.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 app.use("/api/decks", deckRoutes);
+
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Deck Service running on port ${PORT}`));

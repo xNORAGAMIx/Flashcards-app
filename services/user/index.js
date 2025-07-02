@@ -20,6 +20,13 @@ connectRabbit().then(() => {
   console.log("User Service connected to RabbitMQ");
 });
 
+//test
+app.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 // Routes
 app.use("/api/users", userRoutes);
 

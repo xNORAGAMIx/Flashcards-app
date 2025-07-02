@@ -20,6 +20,13 @@ mongoose
   })
   .catch((err) => console.error(err));
 
+//test
+app.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 app.use("/api/stats", statsRoutes);
 const PORT = process.env.PORT || 5005;
 app.listen(PORT, () => console.log(`Stats Service running on port ${PORT}`));

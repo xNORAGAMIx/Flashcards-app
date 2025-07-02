@@ -21,6 +21,13 @@ connectRabbitMQ().then(() => {
   console.log("Connected to RabbitMQ (study)");
 });
 
+//test
+app.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 app.use("/api/study", studyRoutes);
 const PORT = process.env.PORT || 5004;
 app.listen(PORT, () => console.log(`Study Service running on port ${PORT}`));
