@@ -26,9 +26,13 @@ FlashMind is a sleek, modern flashcard-based revision app designed to make learn
 <p align="center">
   <img src="frontend/src/assets/Screenshot from 2025-07-14 14-05-03.png" width="80%" alt="Home Page" />
   <br/>
-  <img src="https://i.imgur.com/xZwGfRo.png" width="80%" alt="Deck Page" />
+  <img src="frontend/src/assets/Screenshot from 2025-07-14 14-05-17.png" width="80%" alt="Profile Page" />
   <br/>
-  <img src="https://i.imgur.com/D6Vyzfq.png" width="80%" alt="Review Stats" />
+  <img src="frontend/src/assets/Screenshot from 2025-07-14 14-05-28.png" width="80%" alt="Deck Page" />
+  <br/>
+  <img src="frontend/src/assets/Screenshot from 2025-07-14 14-05-44.png" width="80%" alt="Cards Page" />
+  <br/>
+  <img src="frontend/src/assets/Screenshot from 2025-07-14 14-06-10.png" width="80%" alt="Statistics Page" />
 </p>
 
 ---
