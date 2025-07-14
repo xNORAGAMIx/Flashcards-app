@@ -14,9 +14,9 @@ FlashMind is a sleek, modern flashcard-based revision app designed to make learn
 - 📊 **Performance Analytics & Stats**
 - 📁 **Deck & Flashcard Management**
 - 🎙️ **Voice-to-Text Flashcard Input** *(Coming Soon)*
-- 📤 **Import / Export (CSV, Anki)** *(Planned)*
+- 📤 **Import / Export (CSV, Anki)**
 - 📱 **Mobile Responsive + PWA Support**
-- 🧑‍🤝‍🧑 **Friends & Public Sharing** *(Upcoming)*
+- 🧑‍🤝‍🧑 **Friends & Public Sharing** 
 - 🔐 **Secure Auth & User Profiles**
 
 ---
@@ -37,13 +37,13 @@ FlashMind is a sleek, modern flashcard-based revision app designed to make learn
 
 **Frontend**:
 - React + Vite
-- Tailwind CSS (Apple-style Glassmorphism)
+- Tailwind CSS
 - Redux Toolkit
 - Chart.js
 - Framer Motion
 - React Router DOM
 
-**Backend** *(Private Repo)*:
+**Backend**:
 - Node.js, Express
 - MongoDB
 - Redis
