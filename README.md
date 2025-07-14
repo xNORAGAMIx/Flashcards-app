@@ -54,7 +54,36 @@ FlashMind is a sleek, modern flashcard-based revision app designed to make learn
 
 ## ⚙️ Local Setup
 
-> 💡 Frontend only — assumes backend services are up & running.
+### 🚀 Backend Setup
+
+> 📁 Backend repo: **Private** or available upon request  
+> Folder structure assumed as: `/Expense-Backend` with microservices
+
+```bash
+# Clone the backend monorepo
+git clone https://github.com/xNORAGAMIx/Expense-Backend.git
+cd Expense-Backend
+
+# Start all services using Docker Compose
+docker-compose up --build
+
+# (optional) If needed, configure environment variables for each microservice
+# Example: user-service/.env
+PORT=5001
+MONGO_URI=mongodb://localhost:27017/userdb
+JWT_SECRET=your_jwt_secret
+
+# Backend will run on different ports:
+# - Auth Service:       http://localhost:5000
+# - User Service:       http://localhost:5001
+# - Deck Service:       http://localhost:5002
+# - Flashcard Service:  http://localhost:5003
+# - Study Service:      http://localhost:5004
+# - Stats Service:      http://localhost:5005
+# - Voice/File Upload:  http://localhost:5006+
+```
+
+### Frontend Setup
 
 ```bash
 # Clone the repository
