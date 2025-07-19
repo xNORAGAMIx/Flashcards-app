@@ -1,0 +1,9 @@
+packages:
+  - "auth"
+  - "deck"
+  - "file"
+  - "flashcard"
+  - "stats"
+  - "study"
+  - "user"
+  - "voice"

@@ -18,6 +18,8 @@ pids/
 
 # Environment variables
 .env
+.env.production
+.env.development
 .env.local
 .env.*.local
 

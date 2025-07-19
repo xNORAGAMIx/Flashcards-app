@@ -6,7 +6,12 @@ import { fileURLToPath } from "url";
 import path from "path";
 import fileRoutes from "./routes/fileRoutes.js";
 
-dotenv.config();
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+
+dotenv.config({ path: envFile });
 
 const app = express();
 

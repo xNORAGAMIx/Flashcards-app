@@ -5,7 +5,12 @@ import cors from "cors";
 import statsRoutes from "./routes/statsRoutes.js";
 import { startConsumer } from "./utils/statsConsumer.js";
 
-dotenv.config();
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+
+dotenv.config({ path: envFile });
 
 const app = express();
 
