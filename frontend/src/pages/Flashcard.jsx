@@ -20,14 +20,17 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import CSVImporter from "../components/CSVImporter";
+import GroupChat from "../components/GroupChat";
 import { motion } from "framer-motion";
 
 const Flashcard = () => {
   const { id } = useParams();
   const token = useSelector((state) => state.auth.token);
   const userId = useSelector((state) => state.auth.userId);
+  const username = useSelector((state) => state.auth.username);
   const allFlashCards = useSelector((state) => state.flashcard.flashcards);
 
+  const [toggle, setToggle] = useState(false);
   const [deck, setDeck] = useState(null);
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -187,11 +190,13 @@ const Flashcard = () => {
     (item) => item.cardId === currentCard?._id
   );
 
+  console.log(toggle);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-6 md:px-12 lg:px-20">
       <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
         {/* Left Column - Deck Info and Card Creation */}
-        <div className="space-y-4">
+        <div className="space-y-">
           {/* Deck Info Card */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
             <div className="p-6">
@@ -205,12 +210,16 @@ const Flashcard = () => {
                     <h1 className="text-6xl font-bold text-gray-900 dark:text-white">
                       {deck.title}
                     </h1>
-                    <button
-                      onClick={() => setEditing(true)}
-                      className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/30"
-                    >
-                      <FiEdit2 className="mr-1" /> Edit
-                    </button>
+                    {deck.userId === userId ? (
+                      <button
+                        onClick={() => setEditing(true)}
+                        className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/30"
+                      >
+                        <FiEdit2 className="ml-4 mt-4" />
+                      </button>
+                    ) : (
+                      " "
+                    )}
                   </div>
 
                   <div className="mt-6 space-y-6">
@@ -332,67 +341,97 @@ const Flashcard = () => {
           </div>
 
           {/* Add Flashcard Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8">
-            {/* CSV Import Section */}
-            <div className="w-full lg:w-1/2">
-              <CSVImporter deckId={id} onImportSuccess={fetchCards} />
-            </div>
 
-            {/* Add Flashcard Form */}
-            <div className="w-full lg:w-1/2">
-              <div className="bg-white dark:bg-gray-800 rounded-xl h-full">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-4">
-                  Add New Flashcard
-                </h2>
-
-                <form onSubmit={handleCreateFlashcard} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Front (Question)
-                    </label>
-                    <textarea
-                      value={front}
-                      onChange={(e) => setFront(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
-                      placeholder="Enter question..."
-                      rows="3"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Back (Answer)
-                    </label>
-                    <textarea
-                      value={back}
-                      onChange={(e) => setBack(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
-                      placeholder="Enter answer..."
-                      rows="3"
-                      required
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={creatingCard}
-                    className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70 cursor-pointer"
-                  >
-                    {creatingCard ? (
-                      <>
-                        <FiRotateCw className="animate-spin mr-2" /> Adding...
-                      </>
-                    ) : (
-                      <>
-                        <FiPlus className="mr-2" /> Add Flashcard
-                      </>
-                    )}
-                  </button>
-                </form>
-              </div>
+          <div className="flex justify-center items-center w-full my-4">
+            <div className="bg-white/10 backdrop-blur-md p-1 rounded-full flex shadow-inner dark:bg-white/5">
+              <button
+                onClick={() => setToggle(false)}
+                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+                  !toggle
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md"
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+                FlashCard
+              </button>
+              <button
+                onClick={() => setToggle(true)}
+                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
+                  toggle
+                    ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
+                    : "text-white hover:bg-white/10"
+                }`}
+              >
+                Chat
+              </button>
             </div>
           </div>
+
+          {toggle === true ? (
+            <GroupChat groupId={id} userId={userId} username={username} />
+          ) : (
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8">
+              {/* CSV Import Section */}
+              <div className="w-full lg:w-1/2">
+                <CSVImporter deckId={id} onImportSuccess={fetchCards} />
+              </div>
+
+              {/* Add Flashcard Form */}
+              <div className="w-full lg:w-1/2">
+                <div className="bg-white dark:bg-gray-800 rounded-xl h-full">
+                  <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+                    Add New Flashcard
+                  </h2>
+
+                  <form onSubmit={handleCreateFlashcard} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Front (Question)
+                      </label>
+                      <textarea
+                        value={front}
+                        onChange={(e) => setFront(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
+                        placeholder="Enter question..."
+                        rows="3"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Back (Answer)
+                      </label>
+                      <textarea
+                        value={back}
+                        onChange={(e) => setBack(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-2xl outline-none dark:bg-gray-700 dark:text-white"
+                        placeholder="Enter answer..."
+                        rows="3"
+                        required
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={creatingCard}
+                      className="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all duration-200 disabled:opacity-70 cursor-pointer"
+                    >
+                      {creatingCard ? (
+                        <>
+                          <FiRotateCw className="animate-spin mr-2" /> Adding...
+                        </>
+                      ) : (
+                        <>
+                          <FiPlus className="mr-2" /> Add Flashcard
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right Column - Flashcard Viewer */}
@@ -423,19 +462,35 @@ const Flashcard = () => {
                   <FiChevronLeft className="mr-1" /> Previous
                 </button>
 
-                <button
+                <motion.button
                   onClick={() => handleReview(true)}
+                  whileTap={{ scale: 0.95 }} // Press down slightly
+                  animate={{
+                    opacity: [1, 0.8, 1], // Quick opacity pulse on render (optional)
+                  }}
+                  transition={{
+                    scale: { type: "spring", stiffness: 300 }, // Bouncy press
+                    opacity: { duration: 0.5 }, // Smooth opacity
+                  }}
                   className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-green-600 hover:bg-green-700 outline-none"
                 >
                   Correct
-                </button>
+                </motion.button>
 
-                <button
-                  onClick={() => handleReview(false)}
+                <motion.button
+                  onClick={() => handleReview(true)}
+                  whileTap={{ scale: 0.95 }} // Press down slightly
+                  animate={{
+                    opacity: [1, 0.8, 1], // Quick opacity pulse on render (optional)
+                  }}
+                  transition={{
+                    scale: { type: "spring", stiffness: 300 }, // Bouncy press
+                    opacity: { duration: 0.5 }, // Smooth opacity
+                  }}
                   className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-red-600 hover:bg-red-700 outline-none"
                 >
                   Incorrect
-                </button>
+                </motion.button>
 
                 <button
                   disabled={currentCardIndex === cards.length - 1}

@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 
 const Deck = () => {
   const token = useSelector((state) => state.auth.token);
+  const loggedInUser = useSelector((state) => state.auth.userId);
   const allDecks = useSelector((state) => state.deck.decks);
   const dispatch = useDispatch();
 
@@ -44,6 +45,8 @@ const Deck = () => {
     currentPage * decksPerPage
   );
 
+  console.log(paginatedDecks);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
@@ -68,7 +71,7 @@ const Deck = () => {
     const handleShared = async () => {
       try {
         const response = await shared(token);
-        response.data.forEach(deck => dispatch(addDeck(deck)));
+        response.data.forEach((deck) => dispatch(addDeck(deck)));
         // console.log(response);
       } catch (err) {
         console.log("Error fetching shared", err);
@@ -122,6 +125,7 @@ const Deck = () => {
           </div>
         </div>
 
+        {/* Search Deck */}
         <div className="mb-6">
           <input
             type="text"
@@ -299,12 +303,17 @@ const Deck = () => {
                           </div>
                         </div>
                         <div className="flex-col space-y-2">
-                          <button
-                            onClick={() => handleDelete(deck._id)}
-                            className="text-sm text-red-500 hover:text-red-600 dark:hover:text-red-400 flex items-center space-x-1 cursor-pointer"
-                          >
-                            <FiTrash className="text-lg" />
-                          </button>
+                          {deck.userId === loggedInUser ? (
+                            <button
+                              onClick={() => handleDelete(deck._id)}
+                              className="text-sm text-red-500 hover:text-red-600 dark:hover:text-red-400 flex items-center space-x-1 cursor-pointer"
+                            >
+                              <FiTrash className="text-lg" />
+                            </button>
+                          ) : (
+                            " "
+                          )}
+
                           <Link
                             to={`/deck/${deck._id}`}
                             className="text-lg font-medium text-sky-600 dark:text-sky-400 hover:text-sky-500 dark:hover:text-sky-300"
@@ -321,6 +330,8 @@ const Deck = () => {
           </div>
         </div>
       </div>
+
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 py-3 z-50">
           <div className="flex justify-center space-x-2">
