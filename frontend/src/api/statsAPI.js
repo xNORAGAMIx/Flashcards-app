@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://stats-service-asca.onrender.com/api/stats"
-  // baseURL: "http://localhost:5005/api/stats",
+  baseURL: import.meta.env.VITE_API_STATS_URL
 });
 
 export const dashboard = (token) => {

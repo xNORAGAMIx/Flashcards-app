@@ -1,10 +1,7 @@
 import axios from "axios";
 
-const URL = "https://auth-service-n1ic.onrender.com"
-
 const API = axios.create({
-  baseURL: "https://auth-service-n1ic.onrender.com/api/auth",
-  //baseURL: "http://localhost:5000/api/auth",
+  baseURL: import.meta.env.VITE_API_AUTH_URL,
 });
 
 export const login = (data) => {

@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://flashcard-service-tv2x.onrender.com/api/flashcards"
-  // baseURL: "http://localhost:5003/api/flashcards",
+  baseURL: import.meta.env.VITE_API_FLASHCARD_URL
 });
 
 // Done

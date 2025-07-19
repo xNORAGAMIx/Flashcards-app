@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://deck-service.onrender.com/api/decks",
-  // baseURL: "http://localhost:5002/api/decks"
+  baseURL: import.meta.env.VITE_API_DECK_URL,
 });
 
 // Done

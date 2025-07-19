@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://user-service-x67a.onrender.com/api/users",
-  //baseURL: "http://localhost:5001/api/users",
+  baseURL: import.meta.env.VITE_API_USER_URL,
 });
 
 export const profile = (token) => {

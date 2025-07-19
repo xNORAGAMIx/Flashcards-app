@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://study-service.onrender.com/api/study",
-  // baseURL: "http://localhost:5004/api/study"
+  baseURL: import.meta.env.VITE_API_STUDY_URL,
 });
 
 export const review = (token, data) => {
