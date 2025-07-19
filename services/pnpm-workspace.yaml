@@ -1,5 +1,6 @@
 packages:
   - "auth"
+  - "chat"
   - "deck"
   - "file"
   - "flashcard"
