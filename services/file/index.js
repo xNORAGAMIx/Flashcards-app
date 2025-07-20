@@ -15,7 +15,10 @@ dotenv.config({ path: envFile });
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://flashmind-six.vercel.app",
+  credentials: true
+}));
 app.use(express.json());
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +34,6 @@ app.get("/test", (req, res) => {
   });
 });
 
-app.use("/api/files", fileRoutes);
+app.use("/", fileRoutes);
 const PORT = process.env.PORT || 5007;
 app.listen(PORT, () => console.log(`File Service running on port ${PORT}`));

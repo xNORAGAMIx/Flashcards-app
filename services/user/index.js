@@ -14,7 +14,10 @@ dotenv.config({ path: envFile });
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://flashmind-six.vercel.app",
+  credentials: true
+}));
 app.use(express.json());
 
 mongoose
@@ -34,7 +37,7 @@ app.get("/test", (req, res) => {
 });
 
 // Routes
-app.use("/api/users", userRoutes);
+app.use("/", userRoutes);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () =>

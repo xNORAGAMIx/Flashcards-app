@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter auth dev\" \"pnpm --filter chat dev\" \"pnpm --filter deck dev\" \"pnpm --filter file dev\" \"pnpm --filter flashcard dev\" \"pnpm --filter stats dev\" \"pnpm --filter study dev\" \"pnpm --filter voice dev\" \"pnpm --filter user dev\" "
+    "dev": "concurrently \"pnpm --filter auth dev\" \"pnpm --filter chat dev\" \"pnpm --filter deck dev\" \"pnpm --filter file dev\" \"pnpm --filter flashcard dev\" \"pnpm --filter stats dev\" \"pnpm --filter study dev\" \"pnpm --filter voice dev\" \"pnpm --filter user dev\" ",
+    "prod": "concurrently \"pnpm --filter auth prod\" \"pnpm --filter chat prod\" \"pnpm --filter deck prod\" \"pnpm --filter file prod\" \"pnpm --filter flashcard prod\" \"pnpm --filter stats prod\" \"pnpm --filter study prod\" \"pnpm --filter voice prod\" \"pnpm --filter user prod\" "
   },
   "keywords": [],
   "author": "",
