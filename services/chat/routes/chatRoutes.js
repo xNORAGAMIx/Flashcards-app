@@ -3,6 +3,13 @@ import Message from "../models/Message.js";
 
 const router = express.Router();
 
+//test
+router.get("/test", (req, res) => {
+  res.json({
+    status: "UP",
+  });
+});
+
 router.get("/:groupId", async (req, res) => {
   try {
     const messages = await Message.find({ groupId: req.params.groupId }).sort({ sentAt: 1 });

@@ -12,10 +12,14 @@ const envFile =
 dotenv.config({ path: envFile });
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://flashmind-six.vercel.app",
+  })
+);
 app.use(express.json());
 
-app.use("/api/chat", chatRoutes);
+app.use("/", chatRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -23,4 +27,3 @@ mongoose
   .catch((err) => console.error("MongoDB error:", err));
 
 export default app;
-

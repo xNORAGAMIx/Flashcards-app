@@ -1,19 +1,31 @@
 import StatsEntry from "../models/StatsEntry.js";
 import redis from "redis";
 import { getToday } from "../utils/streakUtils.js";
+import dotenv from "dotenv";
 
-const client = redis.createClient({ url: process.env.REDIS_URL });
+// const envFile =
+//   process.env.NODE_ENV === "production"
+//     ? ".env.production"
+//     : ".env.development";
+
+// dotenv.config({ path: envFile });
+
+// console.log("REDIS_URL:", process.env.REDIS_URL);
+
+const client = redis.createClient({
+  url: process.env.REDIS_URL,
+});
 
 (async () => {
   try {
     await client.connect();
 
     // Quick test
-    await client.set('test', 'hello');
-    const val = await client.get('test');
-    console.log('Redis GET test:', val); // Should log "hello"
+    await client.set("test", "hello");
+    const val = await client.get("test");
+    console.log("Redis GET test:", val); // Should log "hello"
   } catch (err) {
-    console.error('Connection/test failed:', err);
+    console.error("Connection/test failed:", err);
   }
 })();
 
