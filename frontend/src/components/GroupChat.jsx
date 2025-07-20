@@ -11,7 +11,7 @@ const GroupChat = ({ groupId, userId, username }) => {
   useEffect(() => {
     socket.emit("joinGroup", groupId);
 
-    fetch(`http://localhost:5008/api/chat/${groupId}`)
+    fetch(`http://localhost:5008/api/chat/group/${groupId}`)
       .then((res) => res.json())
       .then((data) => setMessages(data));
 

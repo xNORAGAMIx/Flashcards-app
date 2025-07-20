@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://qzxj.shop/api/auth",
+  baseURL:  import.meta.env.VITE_API_AUTH_URL,
 });
 
 export const login = (data) => {
