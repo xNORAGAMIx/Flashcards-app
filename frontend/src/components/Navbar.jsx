@@ -20,7 +20,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-800 shadow-sm px-6 py-3 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 transition-colors duration-200">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent dark:bg-transparent backdrop-blur-3xl shadow-xl px-6 py-3 flex justify-between items-center border-b rounded-b-3xl border-gray-200 dark:border-gray-600 transition-colors duration-200">
       <div className="flex items-center space-x-2">
         <Link
           to="/"

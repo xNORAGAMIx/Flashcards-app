@@ -519,66 +519,149 @@ const Flashcard = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-5 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow"
+                    
+                    className="relative"
                   >
-                    <div className="flex items-start space-x-3">
-                      <div
-                        className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center ${
-                          currentStudy.correctStreak > 3
-                            ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400"
-                            : "bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400"
-                        }`}
-                      >
-                        {currentStudy.correctStreak}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              Next Review
-                            </p>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {new Date(
-                                currentStudy.nextReview
-                              ).toLocaleDateString("en-US", {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                              })}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              Last Reviewed
-                            </p>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {currentStudy.lastReviewed
-                                ? new Date(
-                                    currentStudy.lastReviewed
-                                  ).toLocaleDateString("en-US", {
-                                    day: "numeric",
-                                    month: "long",
-                                    year: "numeric",
-                                  })
-                                : "Never"}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              Streak
-                            </p>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {currentStudy.correctStreak} correct
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              Interval
-                            </p>
-                            <p className="font-medium text-gray-900 dark:text-white">
-                              {currentStudy.interval} day
-                              {currentStudy.interval !== 1 ? "s" : ""}
-                            </p>
+                    {/* RGB Glow Background */}
+                    <div
+                      className={`absolute inset-0 rounded-xl opacity-20 blur-md transition-all duration-500 ${
+                        currentStudy.correctStreak > 3
+                          ? "bg-gradient-to-br from-emerald-500 to-teal-500"
+                          : "bg-gradient-to-br from-amber-400 to-orange-500"
+                      }`}
+                    ></div>
+
+                    {/* Glass Card */}
+                    <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-5 border border-white/20 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-all">
+                      <div className="flex items-start space-x-3">
+                        {/* Streak Indicator with Pulse Animation */}
+                        <motion.div
+                          className={`flex-shrink-0 h-10 w-10 rounded-full flex items-center justify-center shadow-inner ${
+                            currentStudy.correctStreak > 3
+                              ? "bg-emerald-400/20 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300/30 dark:border-emerald-500/30"
+                              : "bg-amber-400/20 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-300/30 dark:border-amber-500/30"
+                          }`}
+                          animate={{
+                            scale: [1, 1.05, 1],
+                            boxShadow:
+                              currentStudy.correctStreak > 3
+                                ? [
+                                    "0 0 0 0 rgba(16, 185, 129, 0.3)",
+                                    "0 0 0 6px rgba(16, 185, 129, 0)",
+                                    "0 0 0 0 rgba(16, 185, 129, 0)",
+                                  ]
+                                : [
+                                    "0 0 0 0 rgba(245, 158, 11, 0.3)",
+                                    "0 0 0 6px rgba(245, 158, 11, 0)",
+                                    "0 0 0 0 rgba(245, 158, 11, 0)",
+                                  ],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatDelay: 3,
+                          }}
+                        >
+                          <motion.span
+                            key={currentStudy.correctStreak}
+                            initial={{ scale: 1.5 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            {currentStudy.correctStreak}
+                          </motion.span>
+                        </motion.div>
+
+                        <div className="flex-1 min-w-0">
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            {/* Next Review */}
+                            <motion.div
+                              whileHover={{ x: 3 }}
+                              className="bg-white/50 dark:bg-gray-700/50 p-2 rounded-lg"
+                            >
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Next Review
+                              </p>
+                              <p className="font-medium text-gray-900 dark:text-white">
+                                {new Date(
+                                  currentStudy.nextReview
+                                ).toLocaleDateString("en-US", {
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </p>
+                            </motion.div>
+
+                            {/* Last Reviewed */}
+                            <motion.div
+                              whileHover={{ x: 3 }}
+                              className="bg-white/50 dark:bg-gray-700/50 p-2 rounded-lg"
+                            >
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Last Reviewed
+                              </p>
+                              <p className="font-medium text-gray-900 dark:text-white">
+                                {currentStudy.lastReviewed
+                                  ? new Date(
+                                      currentStudy.lastReviewed
+                                    ).toLocaleDateString("en-US", {
+                                      day: "numeric",
+                                      month: "short",
+                                      year: "numeric",
+                                    })
+                                  : "Never"}
+                              </p>
+                            </motion.div>
+
+                            {/* Streak */}
+                            <motion.div
+                              whileHover={{ x: 3 }}
+                              className="bg-white/50 dark:bg-gray-700/50 p-2 rounded-lg"
+                            >
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Streak
+                              </p>
+                              <motion.p
+                                className="font-medium text-gray-900 dark:text-white"
+                                key={currentStudy.correctStreak}
+                                initial={{
+                                  color:
+                                    currentStudy.correctStreak > 3
+                                      ? "#10b981"
+                                      : "#f59e0b",
+                                }}
+                                animate={{ color: "#111827" }}
+                                transition={{ duration: 1 }}
+                              >
+                                {currentStudy.correctStreak} correct
+                                {currentStudy.correctStreak > 3 && (
+                                  <span className="ml-1 text-emerald-500">
+                                    🔥
+                                  </span>
+                                )}
+                              </motion.p>
+                            </motion.div>
+
+                            {/* Interval */}
+                            <motion.div
+                              whileHover={{ x: 3 }}
+                              className="bg-white/50 dark:bg-gray-700/50 p-2 rounded-lg"
+                            >
+                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                                Interval
+                              </p>
+                              <motion.p
+                                className="font-medium text-gray-900 dark:text-white"
+                                key={currentStudy.interval}
+                                initial={{ scale: 1.2 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                {currentStudy.interval} day
+                                {currentStudy.interval !== 1 ? "s" : ""}
+                              </motion.p>
+                            </motion.div>
                           </div>
                         </div>
                       </div>
@@ -626,41 +709,60 @@ const FlashcardFlip = ({
         <FiTrash2 className="text-2xl" />
       </button>
 
-      <motion.div
-        className={`relative h-96 w-full mt-4 cursor-default transform-style-preserve-3d ${
-          flipped ? "rotate-y-180" : ""
-        }`}
-        onClick={() => setFlipped(!flipped)}
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.3 }}
-        animate={{ rotateY: flipped ? 180 : 0 }}
-      >
-        {/* Front */}
-        <div className="absolute inset-0 backface-hidden bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-            Card {cardNumber} of {totalCards} • Click to flip
-          </div>
-          <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
-            {front}
-          </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            Question
-          </div>
-        </div>
+      {/* RGB Glow Container */}
+      <div className="relative">
+        {/* RGB Glow Effect */}
+        <div
+          className={`absolute inset-0 rounded-xl opacity-70 blur-lg transition-all duration-1000 ${
+            flipped
+              ? "bg-gradient-to-br from-purple-500 to-pink-500"
+              : "bg-gradient-to-br from-cyan-400 to-blue-500"
+          }`}
+        ></div>
 
-        {/* Back */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gray-100 dark:bg-zinc-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-            Card {cardNumber} of {totalCards} • Click to flip back
+        {/* Animated RGB border */}
+        <div
+          className={`absolute inset-0 rounded-xl border-2 opacity-80 transition-all duration-1000 ${
+            flipped ? "border-pink-400" : "border-cyan-300"
+          }`}
+        ></div>
+
+        <motion.div
+          className={`relative h-96 w-full mt-4 cursor-default transform-style-preserve-3d ${
+            flipped ? "rotate-y-180" : ""
+          }`}
+          onClick={() => setFlipped(!flipped)}
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.3 }}
+          animate={{ rotateY: flipped ? 180 : 0 }}
+        >
+          {/* Front */}
+          <div className="absolute inset-0 backface-hidden bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+              Card {cardNumber} of {totalCards} • Click to flip
+            </div>
+            <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
+              {front}
+            </div>
+            <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+              Question
+            </div>
           </div>
-          <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
-            {back}
+
+          {/* Back */}
+          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gray-100 dark:bg-zinc-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white">
+            <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+              Card {cardNumber} of {totalCards} • Click to flip back
+            </div>
+            <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
+              {back}
+            </div>
+            <div className="text-xs text-sky-600 dark:text-sky-400 mt-2">
+              Answer
+            </div>
           </div>
-          <div className="text-xs text-sky-600 dark:text-sky-400 mt-2">
-            Answer
-          </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };
