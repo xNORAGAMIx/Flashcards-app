@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import { connectRabbit } from "./utils/rabbit.js";
+import { initAuthConsumer } from "./utils/initAuthConsumer.js";
 
 const envFile =
   process.env.NODE_ENV === "production"
@@ -39,6 +40,8 @@ app.get("/test", (req, res) => {
 
 // Routes
 app.use("/api/auth", authRoutes);
+
+initAuthConsumer();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
