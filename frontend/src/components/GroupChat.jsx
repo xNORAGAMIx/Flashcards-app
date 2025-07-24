@@ -11,9 +11,9 @@ const GroupChat = ({ groupId, userId, username }) => {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
-    if(!isAuthenticated) return;
+    if (!isAuthenticated) return;
 
-    socket = io(import.meta.env.VITE_API_CHAT_URL)
+    socket = io(import.meta.env.VITE_API_CHAT_URL);
 
     socket.emit("joinGroup", groupId);
 
@@ -49,14 +49,17 @@ const GroupChat = ({ groupId, userId, username }) => {
   }, [messages]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col h-[500px] rounded-2xl shadow-xl backdrop-blur-sm bg-white/10 dark:bg-zinc-900/30 border border-white/20 overflow-hidden transition-all">
+    <div
+      className="w-full max-w-4xl mx-auto flex flex-col h-[500px] rounded-2xl backdrop-blur-sm bg-white/10 dark:bg-zinc-900/30  overflow-hidden transition-all shadow-[0_0_30px_rgba(59,130,246,0.2),0_0_30px_rgba(34,211,238,0.2)]
+ "
+    >
       <div className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar">
         {messages?.map((msg) => (
           <div
             key={msg._id}
             className={`max-w-xs px-4 py-2 rounded-xl backdrop-blur-md shadow-md text-sm ${
               msg.senderId === userId
-                ? "ml-auto bg-gradient-to-br from-blue-500/80 to-indigo-600/80 text-white"
+                ? "ml-auto bg-gradient-to-br from-blue-500/80 to-indigo-600/80 text-white shadow-[0_0_10px_rgba(99,102,241,0.6)]"
                 : "mr-auto bg-white/10 border border-white/10 text-white"
             }`}
           >
@@ -79,7 +82,7 @@ const GroupChat = ({ groupId, userId, username }) => {
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
         <button
-          className="px-5 py-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-semibold shadow hover:opacity-90 transition"
+          className="px-5 py-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white font-semibold shadow hover:opacity-90 transition ring-1 ring-white/10 hover:ring-2 hover:ring-blue-400/60 hover:shadow-[0_0_20px_rgba(99,102,241,0.6)]"
           onClick={sendMessage}
         >
           Send

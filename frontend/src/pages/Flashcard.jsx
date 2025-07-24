@@ -22,6 +22,16 @@ import {
 import CSVImporter from "../components/CSVImporter";
 import GroupChat from "../components/GroupChat";
 import { motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import {
+  oneDark,
+  atomDark,
+  vscDarkPlus,
+  dracula,
+  oneLight,
+} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { atomOneDarkReasonable } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const Flashcard = () => {
   const { id } = useParams();
@@ -143,8 +153,15 @@ const Flashcard = () => {
   const handleRemove = async (fid) => {
     try {
       const res = await remove(fid, token);
-      dispatch(setFlashcards(allFlashCards.filter((card) => card._id !== fid)));
-      setCards(allFlashCards);
+      const filteredCards = allFlashCards.filter((card) => card._id !== fid);
+      dispatch(setFlashcards(filteredCards));
+      setCards(filteredCards);
+
+      setCurrentCardIndex((prevIndex) =>
+        prevIndex >= filteredCards.length
+          ? Math.max(0, filteredCards.length - 1)
+          : prevIndex
+      );
     } catch (err) {
       console.log("Error deleting card", err);
     }
@@ -190,15 +207,16 @@ const Flashcard = () => {
     (item) => item.cardId === currentCard?._id
   );
 
-  console.log(toggle);
+  //console.log(toggle);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-20 px-6 md:px-12 lg:px-20">
-      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14">
+      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-14 ">
         {/* Left Column - Deck Info and Card Creation */}
-        <div className="space-y-">
+        <div className="space-y-1 ">
           {/* Deck Info Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(253,224,71,0.2),0_0_30px_rgba(251,191,36,0.2)]
+">
             <div className="p-6">
               {!editing ? (
                 <motion.div
@@ -370,7 +388,8 @@ const Flashcard = () => {
           {toggle === true ? (
             <GroupChat groupId={id} userId={userId} username={username} />
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8  shadow-[0_0_30px_rgba(168,85,247,0.2),0_0_30px_rgba(236,72,153,0.2)]
+">
               {/* CSV Import Section */}
               <div className="w-full lg:w-1/2">
                 <CSVImporter deckId={id} onImportSuccess={fetchCards} />
@@ -519,7 +538,6 @@ const Flashcard = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2 }}
-                    
                     className="relative"
                   >
                     {/* RGB Glow Background */}
@@ -737,12 +755,43 @@ const FlashcardFlip = ({
           animate={{ rotateY: flipped ? 180 : 0 }}
         >
           {/* Front */}
-          <div className="absolute inset-0 backface-hidden bg-zinc-200 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col">
+          <div className="absolute inset-0 backface-hidden bg-gray-800 dark:bg-zinc-800 rounded-xl shadow-lg p-6 flex flex-col overflow-y-auto max-h-96">
             <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
               Card {cardNumber} of {totalCards} • Click to flip
             </div>
-            <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
-              {front}
+            <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-100 dark:text-gray-200 text-center whitespace-pre-wrap prose dark:prose-invert max-w-none">
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={vscDarkPlus}
+                        language={match[1]}
+                        PreTag="div"
+                        customStyle={{
+                          padding: "1em",
+                          borderRadius: "0.5rem",
+                          fontSize: "0.9rem",
+                          backgroundColor: "transparent",
+                        }}
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code
+                        className="bg-gray-200 dark:bg-gray-800 px-1 py-0.5 rounded"
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {front}
+              </ReactMarkdown>
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
               Question
@@ -750,12 +799,43 @@ const FlashcardFlip = ({
           </div>
 
           {/* Back */}
-          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gray-100 dark:bg-zinc-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white">
+          <div className="absolute inset-0 backface-hidden rotate-y-180 bg-black dark:bg-zinc-900 p-4 rounded-lg shadow text-lg font-medium flex flex-col text-gray-800 dark:text-white overflow-y-auto max-h-96">
             <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
               Card {cardNumber} of {totalCards} • Click to flip back
             </div>
-            <div className="flex-grow flex items-center justify-center text-xl font-medium text-gray-800 dark:text-gray-200 text-center">
-              {back}
+            <div className="flex-grow flex-col items-center justify-evenly text-xl font-medium text-gray-100 dark:text-gray-200 break-words whitespace-pre-wrap text-center font-mono">
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        style={dracula}
+                        language={match[1]}
+                        PreTag="div"
+                        customStyle={{
+                          padding: "1em",
+                          borderRadius: "0.5rem",
+                          fontSize: "0.9rem",
+                          backgroundColor: "transparent",
+                        }}
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code
+                        className="bg-gray-200 dark:bg-gray-800 px-1 py-0.5 rounded"
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {back}
+              </ReactMarkdown>
             </div>
             <div className="text-xs text-sky-600 dark:text-sky-400 mt-2">
               Answer
