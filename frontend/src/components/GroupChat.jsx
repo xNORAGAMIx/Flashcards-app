@@ -1,17 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5008");
+let socket;
 
 const GroupChat = ({ groupId, userId, username }) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const chatEndRef = useRef(null);
 
   useEffect(() => {
+    if(!isAuthenticated) return;
+
+    socket = io(import.meta.env.VITE_API_CHAT_URL)
+
     socket.emit("joinGroup", groupId);
 
-    fetch(`http://localhost:5008/api/chat/group/${groupId}`)
+    fetch(`http://localhost:5008/api/chat/${groupId}`)
       .then((res) => res.json())
       .then((data) => setMessages(data));
 

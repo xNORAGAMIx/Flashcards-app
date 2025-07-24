@@ -14,12 +14,12 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://flashmind-six.vercel.app",
+    origin: process.env.URL,
   })
 );
 app.use(express.json());
 
-app.use("/", chatRoutes);
+app.use("/api/chat", chatRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

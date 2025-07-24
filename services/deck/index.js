@@ -14,7 +14,7 @@ dotenv.config({ path: envFile });
 const app = express();
 
 app.use(cors({
-  origin: "https://flashmind-six.vercel.app",
+  origin: process.env.URL,
   credentials: true
 }));
 app.use(express.json());
@@ -31,7 +31,7 @@ app.get("/test", (req, res) => {
   });
 });
 
-app.use("/", deckRoutes);
+app.use("/api/decks", deckRoutes);
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => console.log(`Deck Service running on port ${PORT}`));

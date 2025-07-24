@@ -15,7 +15,12 @@ const deckSlice = createSlice({
       state.decks = [];
     },
     addDeck: (state, action) => {
-      state.decks.push(action.payload); 
+      const exists = state.decks.some(
+        (deck) => deck._id === action.payload._id
+      );
+      if (!exists) {
+        state.decks.push(action.payload);
+      }
     },
   },
 });

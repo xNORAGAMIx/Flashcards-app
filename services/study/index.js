@@ -15,7 +15,7 @@ dotenv.config({ path: envFile });
 const app = express();
 
 app.use(cors({
-  origin: "https://flashmind-six.vercel.app",
+  origin: process.env.URL,
   credentials: true
 }));
 app.use(express.json());
@@ -36,6 +36,6 @@ app.get("/test", (req, res) => {
   });
 });
 
-app.use("/", studyRoutes);
+app.use("/api/study", studyRoutes);
 const PORT = process.env.PORT || 5004;
 app.listen(PORT, () => console.log(`Study Service running on port ${PORT}`));

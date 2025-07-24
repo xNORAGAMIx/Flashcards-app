@@ -6,7 +6,7 @@ import { socketHandler } from "./socket/app.js";
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://flashmind-six.vercel.app",
+    origin: process.env.URL,
   },
 });
 

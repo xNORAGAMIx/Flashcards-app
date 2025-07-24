@@ -16,21 +16,32 @@ import {
 import { motion } from "framer-motion";
 
 const Deck = () => {
+  // user token from redux store
   const token = useSelector((state) => state.auth.token);
+  // user Id from redux store
   const loggedInUser = useSelector((state) => state.auth.userId);
+  // decks from redux store
   const allDecks = useSelector((state) => state.deck.decks);
+  // dispatch function from redux
   const dispatch = useDispatch();
 
+  // form
   const [title, setTitle] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [tags, setTags] = useState("");
+
+  // loading states
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
+
+  // search functionality
   const [searchQuery, setSearchQuery] = useState("");
 
+  // current page and pagination
   const [currentPage, setCurrentPage] = useState(1);
   const decksPerPage = 6;
 
+  // Filter decks based on search query
   const filteredDecks = allDecks.filter((deck) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -39,18 +50,19 @@ const Deck = () => {
     );
   });
 
+  // Pagination logic
   const totalPages = Math.ceil(filteredDecks.length / decksPerPage);
   const paginatedDecks = filteredDecks.slice(
     (currentPage - 1) * decksPerPage,
     currentPage * decksPerPage
   );
 
-  console.log(paginatedDecks);
-
+  // Reset current page when search query changes
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  // Fetch decks and shared decks on component mount
   useEffect(() => {
     const handleDeck = async () => {
       setLoading(true);
@@ -67,12 +79,12 @@ const Deck = () => {
     handleDeck();
   }, [token, dispatch]);
 
+  // Fetch shared decks
   useEffect(() => {
     const handleShared = async () => {
       try {
         const response = await shared(token);
         response.data.forEach((deck) => dispatch(addDeck(deck)));
-        // console.log(response);
       } catch (err) {
         console.log("Error fetching shared", err);
       }
@@ -81,6 +93,7 @@ const Deck = () => {
     handleShared();
   }, [token, dispatch]);
 
+  // Handle deck creation
   const handleCreate = async (e) => {
     e.preventDefault();
     setCreating(true);
@@ -104,6 +117,7 @@ const Deck = () => {
     }
   };
 
+  // Handle deck deletion
   const handleDelete = async (id) => {
     try {
       const response = await remove(id, token);
@@ -111,6 +125,26 @@ const Deck = () => {
     } catch (err) {
       console.error("Error deleting deck:", err);
     }
+  };
+
+  const DeckSkeleton = () => {
+    return (
+      <li className="p-6 animate-pulse">
+        <div className="flex justify-between items-start">
+          <div className="space-y-2">
+            <div className="h-5 bg-gray-300 dark:bg-gray-700 rounded w-48" />
+            <div className="flex space-x-4">
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-20" />
+              <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-32" />
+            </div>
+          </div>
+          <div className="flex flex-col space-y-2">
+            <div className="h-6 w-6 bg-gray-300 dark:bg-gray-700 rounded-full" />
+            <div className="h-4 w-20 bg-gray-300 dark:bg-gray-700 rounded" />
+          </div>
+        </div>
+      </li>
+    );
   };
 
   return (
@@ -245,12 +279,11 @@ const Deck = () => {
               </div>
 
               {loading ? (
-                <div className="p-8 text-center">
-                  <FiLoader className="animate-spin mx-auto text-gray-400 text-2xl mb-2" />
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Loading your decks...
-                  </p>
-                </div>
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {Array.from({ length: 4 }).map((_, index) => (
+                    <DeckSkeleton key={index} />
+                  ))}
+                </ul>
               ) : allDecks.length === 0 ? (
                 <div className="p-8 text-center">
                   <div className="mx-auto h-24 w-24 text-gray-400 mb-4 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700">

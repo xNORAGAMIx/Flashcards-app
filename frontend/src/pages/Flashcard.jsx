@@ -349,7 +349,7 @@ const Flashcard = () => {
                 className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
                   !toggle
                     ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-md"
-                    : "text-white hover:bg-white/10"
+                    : "dark:text-white hover:bg-white/10"
                 }`}
               >
                 FlashCard
@@ -359,7 +359,7 @@ const Flashcard = () => {
                 className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
                   toggle
                     ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md"
-                    : "text-white hover:bg-white/10"
+                    : "dark:text-white hover:bg-white/10"
                 }`}
               >
                 Chat
@@ -478,7 +478,7 @@ const Flashcard = () => {
                 </motion.button>
 
                 <motion.button
-                  onClick={() => handleReview(true)}
+                  onClick={() => handleReview(false)}
                   whileTap={{ scale: 0.95 }} // Press down slightly
                   animate={{
                     opacity: [1, 0.8, 1], // Quick opacity pulse on render (optional)
