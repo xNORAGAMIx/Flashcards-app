@@ -7,6 +7,9 @@ import { login as loginAction } from "../../features/auth/authSlice";
 import { FiMail, FiLock, FiLogIn } from "react-icons/fi";
 import { motion } from "framer-motion";
 
+import { profile } from "../../api/userAPI";
+import { setProfile } from "../../features/auth/authSlice";
+
 const Login = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [email, setEmail] = useState("");
@@ -30,12 +33,35 @@ const Login = () => {
       const response = await login({ email, password });
       const { username: userName, token, email: userEmail } = response.data;
       dispatch(loginAction({ token, email: userEmail, username: userName }));
+      await handleProfile(token);
       navigate("/profile");
     } catch (error) {
-      setError(error.response?.data?.message || "Login failed. Please try again.");
+      setError(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
       console.error("Login failed:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleProfile = async (token) => {
+    try {
+      const response = await profile(token);
+      dispatch(
+        setProfile({
+          userId: response.data.userId,
+          name: response.data.name,
+          bio: response.data.bio,
+          friends: response.data.friends,
+        })
+      );
+      // setNameInput(response.data.name || "");
+      // setBioInput(response.data.bio || "");
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    } finally {
+      // setLoading(false);
     }
   };
 
@@ -75,7 +101,10 @@ const Login = () => {
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -95,7 +124,10 @@ const Login = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
                   Password
                 </label>
                 <div className="relative">

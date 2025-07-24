@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { profile, friend, update } from "../api/userAPI";
+import { friend, update } from "../api/userAPI";
 import { setProfile } from "../features/auth/authSlice";
 import {
   FiEdit2,
@@ -14,7 +14,7 @@ import {
 import { motion } from "framer-motion";
 
 const Profile = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [nameInput, setNameInput] = useState("");
   const [bioInput, setBioInput] = useState("");
@@ -25,30 +25,6 @@ const Profile = () => {
   const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const handleProfile = async () => {
-      try {
-        const response = await profile(token);
-        dispatch(
-          setProfile({
-            userId: response.data.userId,
-            name: response.data.name,
-            bio: response.data.bio,
-            friends: response.data.friends,
-          })
-        );
-        setNameInput(response.data.name || "");
-        setBioInput(response.data.bio || "");
-      } catch (error) {
-        console.error("Error fetching profile:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (token) handleProfile();
-  }, [token, dispatch]);
 
   const handleProfileUpdate = async () => {
     try {
