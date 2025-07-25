@@ -215,7 +215,7 @@ const Flashcard = () => {
         {/* Left Column - Deck Info and Card Creation */}
         <div className="space-y-1 ">
           {/* Deck Info Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(253,224,71,0.2),0_0_30px_rgba(251,191,36,0.2)]
+          <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden dark:shadow-2xl shadow-[0_0_30px_rgba(253,224,71,0.2),0_0_30px_rgba(251,191,36,0.2)]
 ">
             <div className="p-6">
               {!editing ? (
@@ -388,7 +388,7 @@ const Flashcard = () => {
           {toggle === true ? (
             <GroupChat groupId={id} userId={userId} username={username} />
           ) : (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8  shadow-[0_0_30px_rgba(168,85,247,0.2),0_0_30px_rgba(236,72,153,0.2)]
+            <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden flex flex-col lg:flex-row gap-6 p-4 sm:p-6 lg:p-8 dark:shadow-2xl shadow-[0_0_30px_rgba(168,85,247,0.2),0_0_30px_rgba(236,72,153,0.2)]
 ">
               {/* CSV Import Section */}
               <div className="w-full lg:w-1/2">

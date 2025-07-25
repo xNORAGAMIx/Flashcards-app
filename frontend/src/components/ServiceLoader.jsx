@@ -50,9 +50,12 @@ export default function ServiceLoader({ children }) {
 
   if (loading) {
     return (
-      <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: `url('/cloud.png')`,
-      }}>
+      <div
+        className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('/cloud.png')`,
+        }}
+      >
         {/* Animated blurred gradients */}
         <div className="absolute inset-0 -z-10 pointer-events-none">
           <div className="absolute w-[600px] h-[600px] bg-green-500/20 rounded-full blur-[200px] top-[-100px] left-[-100px] animate-pulse" />

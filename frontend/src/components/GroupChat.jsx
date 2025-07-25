@@ -50,7 +50,7 @@ const GroupChat = ({ groupId, userId, username }) => {
 
   return (
     <div
-      className="w-full max-w-4xl mx-auto flex flex-col h-[500px] rounded-2xl backdrop-blur-sm bg-white/10 dark:bg-zinc-900/30  overflow-hidden transition-all shadow-[0_0_30px_rgba(59,130,246,0.2),0_0_30px_rgba(34,211,238,0.2)]
+      className="w-full max-w-4xl mx-auto flex flex-col h-[500px] rounded-2xl backdrop-blur-sm bg-white/10 dark:bg-zinc-900/50  overflow-hidden transition-all dark:shadow-2xl shadow-[0_0_30px_rgba(59,130,246,0.2),0_0_30px_rgba(34,211,238,0.2)]
  "
     >
       <div className="flex-1 p-4 overflow-y-auto space-y-3 custom-scrollbar">
