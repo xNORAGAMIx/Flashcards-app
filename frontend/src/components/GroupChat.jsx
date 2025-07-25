@@ -17,7 +17,7 @@ const GroupChat = ({ groupId, userId, username }) => {
 
     socket.emit("joinGroup", groupId);
 
-    fetch(`http://localhost:5008/api/chat/${groupId}`)
+    fetch(`${import.meta.env.VITE_API_CHAT_URL}/api/chat/${groupId}`)
       .then((res) => res.json())
       .then((data) => setMessages(data));
 
@@ -28,7 +28,7 @@ const GroupChat = ({ groupId, userId, username }) => {
     return () => {
       socket.off("newMessage");
     };
-  }, [groupId]);
+  }, [groupId, isAuthenticated]);
 
   const sendMessage = () => {
     if (!input.trim()) return;
