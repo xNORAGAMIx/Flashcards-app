@@ -12,6 +12,7 @@ import {
   FiUser,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
+import DynamicQRCode from "../components/DynamicQRCode";
 
 const Profile = () => {
   const [loading, setLoading] = useState(false);
@@ -231,13 +232,9 @@ const Profile = () => {
                       Account Information
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          User ID
-                        </p>
-                        <p className="text-sm font-mono text-gray-900 dark:text-gray-200">
-                          {user?.userId}
-                        </p>
+                      <div>                        
+                        <DynamicQRCode 
+                          value={user?.userId}/>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
