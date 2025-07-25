@@ -42,7 +42,11 @@ const Profile = () => {
   const handleAddFriend = async () => {
     try {
       const response = await friend(token, { friendId: friendEmail });
-      dispatch(setProfile({ ...response.data }));
+      dispatch(setProfile({ 
+        userId: user?.userId,
+        bio: user?.bio,
+        friends: [...user.friends, response.data.friend]
+       }));
       setFriendEmail("");
       setShowFriendSuccess(true);
       setTimeout(() => setShowFriendSuccess(false), 3000);
@@ -237,10 +241,10 @@ const Profile = () => {
                       </div>
                       <div>
                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                          Account Type
+                          Email
                         </p>
                         <p className="text-sm text-gray-900 dark:text-gray-200">
-                          Standard
+                          {user?.email}
                         </p>
                       </div>
                     </div>
@@ -283,7 +287,7 @@ const Profile = () => {
 
                     {showFriendSuccess && (
                       <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-                        Friend request sent successfully!
+                        Friend added successfully!
                       </p>
                     )}
                   </div>
