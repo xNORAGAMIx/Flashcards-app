@@ -8,7 +8,7 @@ const services = [
   { name: "Chat", url: import.meta.env.VITE_API_CHAT_TEST },
   { name: "File", url: import.meta.env.VITE_API_FILE_TEST },
   { name: "Flashcard", url: import.meta.env.VITE_API_FLASHCARD_TEST },
-  { name: "Stats", url: import.meta.env.VITE_API_STATS_TEST },
+
   { name: "User", url: import.meta.env.VITE_API_USER_TEST },
 ];
 
