@@ -5,7 +5,6 @@ const services = [
   { name: "Auth", url: import.meta.env.VITE_API_AUTH_TEST },
   { name: "Study", url: import.meta.env.VITE_API_STUDY_TEST },
   { name: "Deck", url: import.meta.env.VITE_API_DECK_TEST },
-  { name: "Chat", url: import.meta.env.VITE_API_CHAT_TEST },
   { name: "File", url: import.meta.env.VITE_API_FILE_TEST },
   { name: "Flashcard", url: import.meta.env.VITE_API_FLASHCARD_TEST },
 
